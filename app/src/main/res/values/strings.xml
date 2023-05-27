@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AndroidApp1</string>
+    <string name="reg_text"><u>Register</u></string>
+    <string name="sign_in_text">Sign in</string>
+</resources>

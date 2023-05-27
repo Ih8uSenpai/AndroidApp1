@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="My_style1" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerSizeTopLeft">30dp</item>
+        <item name="cornerFamilyBottomRight">rounded</item>
+        <item name="cornerSizeBottomRight">30dp</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSizeTopRight">30dp</item>
+        <item name="cornerFamilyBottomLeft">rounded</item>
+        <item name="cornerSizeBottomLeft">30dp</item>
+    </style>
+    <style name="My_style2">
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerSizeTopLeft">30dp</item>
+        <item name="cornerFamilyBottomRight">rounded</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerFamilyTopRight">cut</item>
+        <item name="cornerSizeTopRight">70dp</item>
+        <item name="cornerFamilyBottomLeft">rounded</item>
+        <item name="cornerSizeBottomLeft">30dp</item>
+    </style>
+</resources>

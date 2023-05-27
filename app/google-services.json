@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1095203368253",
+    "firebase_url": "https://androidgachaapp-default-rtdb.firebaseio.com",
+    "project_id": "androidgachaapp",
+    "storage_bucket": "androidgachaapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095203368253:android:82fe5fcfdd739c91ade954",
+        "android_client_info": {
+          "package_name": "com.example.androidapp1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1095203368253-hldis5eu61agbib2gftsi0epugif7crg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.androidapp1",
+            "certificate_hash": "747fc4f4663a98e5eae7a09df252db3747168923"
+          }
+        },
+        {
+          "client_id": "1095203368253-q9m0eked5oj9q8je8mf4cn3kuch7057f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_l-2Xk1fhUwck7wotB6p1xg6FTr3MoPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095203368253-q9m0eked5oj9q8je8mf4cn3kuch7057f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
