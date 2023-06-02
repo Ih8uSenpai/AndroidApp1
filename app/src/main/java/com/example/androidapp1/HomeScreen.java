@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -42,6 +43,7 @@ import com.example.androidapp1.Models.pair;
 import com.example.androidapp1.engine.Engine;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -299,10 +301,8 @@ public class HomeScreen extends AppCompatActivity {
         characters_button = findViewById(R.id.characters_button);
         rating_screen = findViewById(R.id.rating_screen);
         inventory_screen = findViewById(R.id.inventory_screen);
-        characters_screen = findViewById(R.id.characters_screen);
         settings_screen = findViewById(R.id.settings_screen);
         rating_to_home = findViewById(R.id.rating_to_home);
-        characters_to_home = findViewById(R.id.characters_to_home);
         inventory_to_home = findViewById(R.id.inventory_to_home);
         settings_to_home = findViewById(R.id.settings_to_home);
 
@@ -502,15 +502,9 @@ public class HomeScreen extends AppCompatActivity {
         characters_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                characters_screen.setVisibility(View.VISIBLE);
-                home_screen.setVisibility(View.GONE);
-            }
-        });
-        characters_to_home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                home_screen.setVisibility(View.VISIBLE);
-                characters_screen.setVisibility(View.GONE);
+                startActivity(new Intent(HomeScreen.this, Characters.class));
+                finish();
+                //startActivity(new Intent(MainActivity.this, ReadActivity.class));
             }
         });
 
