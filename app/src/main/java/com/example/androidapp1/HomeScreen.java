@@ -686,7 +686,8 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        if (currentFragment == null) {
+        fragmentTransaction.replace(R.id.fragment_container, new Gacha_screen());
+        /*if (currentFragment == null) {
             fragmentTransaction.replace(R.id.fragment_container, new Gacha_screen());
         } else if (currentFragment instanceof Gacha_screen) {
             fragmentTransaction.replace(R.id.fragment_container, new fragment2());
@@ -694,8 +695,10 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
         }
         else
             fragmentTransaction.replace(R.id.fragment_container, new Gacha_screen());
+         */
         fragmentTransaction.commit();
         home_screen.setVisibility(View.GONE);
+        fragmentContainer.setVisibility(View.VISIBLE);
     }
 
     public void setOnCompletionListeners(){

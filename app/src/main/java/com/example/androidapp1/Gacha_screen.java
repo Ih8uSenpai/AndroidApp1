@@ -209,7 +209,6 @@ public class Gacha_screen extends Fragment {
         toHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toHome.setBackgroundResource(R.drawable.blade_bg1);
                 if (getActivity() instanceof FragmentInteractionListener) {
                     ((FragmentInteractionListener) getActivity()).onFragmentClosed();
                 }
@@ -298,7 +297,7 @@ public class Gacha_screen extends Fragment {
             loot = loot_table_5star[loot_value];
             current_user_data.updatePulls_to_5star(0, usersData);
             ost1.pause();
-            current_user_data.getCones().get(loot_value).setIs_obtained(true, String.valueOf(loot_value), usersData);
+            //current_user_data.getCones().get(loot_value).setIs_obtained(true, String.valueOf(loot_value), usersData);
 
             return new pair(5, loot_value);
         }
@@ -307,7 +306,7 @@ public class Gacha_screen extends Fragment {
             loot = loot_table_4star[loot_value];
             current_user_data.updatePulls_to_4star(0, usersData);
             ost1.pause();
-            current_user_data.getCones().get(loot_value).setIs_obtained(true, String.valueOf(loot_value), usersData);
+            current_user_data.getCones().get(loot_value + 8).setIs_obtained(true, String.valueOf(loot_value + 8), usersData);
             return new pair(4, loot_value);
         }
 
@@ -335,7 +334,7 @@ public class Gacha_screen extends Fragment {
             current_user_data.update_loot_table(rarity_value, usersData);
 
 
-            current_user_data.getCones().get(loot_value).setIs_obtained(true, String.valueOf(loot_value), usersData);
+            current_user_data.getCones().get(loot_value + 8).setIs_obtained(true, String.valueOf(loot_value + 8), usersData);
         } else {
             loot_value = random.nextInt(loot_table_5star.length);
             current_user_data.updatePulls_to_5star(0, usersData);
