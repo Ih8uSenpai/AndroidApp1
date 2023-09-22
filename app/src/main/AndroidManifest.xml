@@ -12,8 +12,13 @@
         android:theme="@style/Theme.AndroidApp1"
         tools:targetApi="31">
         <activity
+            android:name=".Profile_screen"
+            android:exported="false"
+            android:screenOrientation="landscape"/>
+        <activity
             android:name=".Characters"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".HomeScreen"
             android:exported="false"

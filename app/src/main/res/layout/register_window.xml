@@ -1,65 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="300dp"
     android:layout_height="match_parent"
-    app:cardElevation="10dp"
-    android:layout_centerHorizontal="true"
-    >
+    android:background="#141A21">
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:orientation="vertical">
-        <com.rengwuxian.materialedittext.MaterialEditText
+        android:layout_centerInParent="true"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#222C37">
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/emailField"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:text=""
-            android:textColor="@color/black"
-            android:textColorHint="@color/design_default_color_on_primary"
-            android:textSize="20sp"
+            android:padding="16dp">
 
-            app:met_floatingLabel="highlight"
-            app:met_baseColor="@color/black"
-            app:met_primaryColor="@color/black"
-            />
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/nameField"
-            android:hint="Username"
-            android:inputType="text"
-            android:text=""
-            android:textColor="@color/black"
-            android:textColorHint="@color/design_default_color_on_primary"
-            android:textSize="20sp"
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/emailField"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#3A4563"/>
 
-            app:met_floatingLabel="highlight"
-            app:met_baseColor="@color/black"
-            app:met_primaryColor="@color/black"
-            />
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/passField"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:text=""
-            android:textColor="@color/black"
-            android:textColorHint="@color/design_default_color_on_primary"
-            android:textSize="20sp"
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/nameField"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@+id/emailField"
+                android:layout_marginTop="16dp"
+                android:hint="Username"
+                android:inputType="textPassword"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#3A4563"/>
 
-            app:met_floatingLabel="highlight"
-            app:met_baseColor="@color/black"
-            app:met_primaryColor="@color/black"
-            />
-
-    </LinearLayout>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/passField"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@id/nameField"
+                android:layout_marginTop="16dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#3A4563"/>
 
 
-</androidx.cardview.widget.CardView>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/signUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/passField"
+                android:layout_marginTop="16dp"
+                android:text="Sign Up"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#6770F1"/>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

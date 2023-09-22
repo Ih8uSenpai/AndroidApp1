@@ -2,16 +2,17 @@ package com.example.androidapp1;
 
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -25,11 +26,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
-import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -37,13 +38,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.androidapp1.Models.InventoryItem;
 import com.example.androidapp1.Models.User;
 import com.example.androidapp1.Models.UserData;
 import com.example.androidapp1.Models.pair;
 import com.example.androidapp1.engine.Engine;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,32 +52,43 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class HomeScreen extends AppCompatActivity {
+public class HomeScreen extends AppCompatActivity implements FragmentInteractionListener {
 
+    private static final int CONES_SIZE = 3;
+    private static final int ARTIFACTS_SIZE = 5;
+    private static final int ITEMS_SIZE = 2;
     int[] exp_table = new int[]{100, 200, 320, 450, 600, 850, 1200, 1600, 2200, 3000,
             3751, 4212, 4912, 5921, 7123, 8234, 9653, 10923, 12402, 14329,
             16481, 18982, 21424, 24021, 27965, 32420, 36831, 41242, 47634, 55131,
             62521, 70123, 79123, 89123, 103211, 112381, 124181, 137123, 151271, 165247,
             181427, 196148, 216471, 238131, 260812, 284881, 310161, 342518, 381271, 459211,
             561412, 725219, 920001, 1201231, 1601231, 2301231, 3101231, 4101231, 5501231, 10501231, 17501231};
-    String[] loot_table_3star = new String[]{"3 star weapon1", "3 star weapon2", "3 star weapon3", "3 star weapon4", "3 star weapon5", "3 star weapon6", "3 star weapon7", "3 star weapon8"};
-    String[] loot_table_4star = new String[]{"4 star weapon1", "4 star weapon2", "4 star weapon3", "4 star weapon4", "4 star weapon5", "4 star weapon6", "4 star weapon7", "4 star weapon8"};
-    String[] loot_table_5star = new String[]{"5 star1", "5 star2", "5 star3"};
-    VideoView videoPlayer;
-    MediaPlayer ost1;
-    MediaPlayer pull_ost;
+    int[] characters_exp_table = new int[]{100, 200, 320, 450, 600, 850, 1200, 1600, 2200, 3000,
+            3751, 4212, 4912, 5921, 7123, 8234, 9653, 10923, 12402, 14329,
+            16481, 18982, 21424, 24021, 27965, 32420, 36831, 41242, 47634, 55131,
+            62521, 70123, 79123, 89123, 103211, 112381, 124181, 137123, 151271, 165247,
+            181427, 196148, 216471, 238131, 260812, 284881, 310161, 342518, 381271, 459211,
+            561412, 725219, 920001, 1201231, 1601231, 2301231, 3101231, 4101231, 5501231, 10501231, 17501231};
+    static String[] loot_table_3star = new String[]{"Threads of Fate", "Echoes of the Forgotten", "Veil of Serenity", "Glimmer of Hope", "Whispers of Time", "Mists of Solitude", "Eclipsed Moon", "Shattered Illusions"};
+    static String[] loot_table_4star = new String[]{"Codex of the Unfathomable", "Resonance of the Void", "Vortex of Forgotten Dreams", "Nexus of Cosmic Synchronicity", "Tempest of Calamity", "Phantasmal Crucible", "Odyssey of the Ancestral", "Aetherial Quasar"};
+    static String[] loot_table_5star = new String[]{"Kafka", "Kiana", "Blade"};
+    VideoView videoPlayer, play_button;
+    static MediaPlayer ost1, ost2, ost3, ost4;
 
 
     //database
     FirebaseAuth auth;
     FirebaseDatabase db;
-    DatabaseReference usersData;
+    static DatabaseReference usersData;
     DatabaseReference users;
     ConstraintLayout root;
 
@@ -91,37 +103,22 @@ public class HomeScreen extends AppCompatActivity {
     AppCompatButton get_gems;
     ImageButton memories_btn;
     User current_user;
-    UserData current_user_data;
+    static UserData current_user_data;
     ArrayAdapter adapter;
     ConstraintLayout home_screen;
     ConstraintLayout memories_screen;
-    AppCompatButton backHome;
-    AppCompatButton pull;
-    AppCompatButton pull_10;
-    TextView gems1, pulls;
-    VideoView pull_animation_1;
-    VideoView loot_animation;
-    ConstraintLayout pull_animation_screen;
-    Dialog dialog;
-    View pull_window;
-    ConstraintLayout pull_layout;
-    TextView item_name_field;
-    ShapeableImageView item_picture_field;
-    SurfaceHolder sh;
-    SurfaceHolder sh1;
+    ImageButton memoriesToHome;
+
+    TextView gems1, pulls, gems_inv, gold_inv;
+
+
 
     MediaPlayer mp;
 
-    VideoView loot_wait_animation;
-    VideoView loot_spawn_animation;
-    MediaPlayer pull_animation;
-    SurfaceView pull_surface;
-    SurfaceView star_sky;
+
     Engine engine;
 
     MaterialCardView profile_bar;
-    AppCompatButton profile_to_home;
-    ConstraintLayout profile_screen;
     ImageButton rating_button;
     ImageButton settings_button;
     ImageButton inventory_button;
@@ -132,14 +129,32 @@ public class HomeScreen extends AppCompatActivity {
     ConstraintLayout settings_screen;
     AppCompatButton rating_to_home;
     AppCompatButton characters_to_home;
-    AppCompatButton inventory_to_home;
+    ImageButton inventory_to_home;
     AppCompatButton settings_to_home;
     SeekBar volume_seek_bar;
     AudioManager audioManager;
+    ConstraintLayout eventsLayout;
+    ImageButton eventsToHome;
+    AppCompatButton items_btn, cones_btn, artifacts_btn;
+
+
+
 
     int max_volume, cur_volume;
 
     Spinner language_spinner;
+
+    GridView inventory_grid_cones, inventory_grid_artifacts, inventory_grid_items;
+    List<InventoryItem> items_cone, items_artifact, items_item;
+    ImageButton events_btn;
+    private static ArrayList<Integer> coneIds, artifactIds, itemsIds;
+    TextView inventory_section_name;
+
+    ImageButton music_switch;
+
+    ImageButton guild_button;
+
+    FrameLayout fragmentContainer;
 
 
 
@@ -162,6 +177,7 @@ public class HomeScreen extends AppCompatActivity {
         // database read
         getUsers();
         getUsersData();
+
         //onCreateEnd
     }
 
@@ -171,7 +187,7 @@ public class HomeScreen extends AppCompatActivity {
         if (videoPlayer == null) {
             // adding video
             videoPlayer = findViewById(R.id.home_screen_bg);
-            Uri myVideoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.home_page_bg1);
+            Uri myVideoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.home_background5);
             videoPlayer.setVideoURI(myVideoUri);
             // start+cycle video
             videoPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -183,6 +199,7 @@ public class HomeScreen extends AppCompatActivity {
         }
         if (!videoPlayer.isPlaying())
             videoPlayer.start();
+
 
         // adding audio
         if (ost1 == null)
@@ -230,15 +247,23 @@ public class HomeScreen extends AppCompatActivity {
                 //User user = dataSnapshot.getValue(User.class);
                 //assert user != null;
                 //username.setText(user.getName());
+                current_user_data = UserData.getInstance();
                 current_user_data = dataSnapshot.getValue(UserData.class);
                 assert current_user_data != null;
                 level.setText(String.format("%d", current_user_data.getLvl()));
                 gems.setText(String.format("%d", current_user_data.getGems()));
                 gold.setText(String.format("%d", current_user_data.getGold()));
-                pulls.setText(String.format("%d", current_user_data.getPulls()));
-                gems1.setText(String.format("%d", current_user_data.getGems()));
+                gold_inv.setText(String.format("%d", current_user_data.getGold()));
+                gems_inv.setText(String.format("%d", current_user_data.getGems()));
                 levelProgressBar.setMax(exp_table[current_user_data.getLvl() + 1] - exp_table[current_user_data.getLvl()]);
                 levelProgressBar.setProgress(current_user_data.getExp() - exp_table[current_user_data.getLvl()]);
+                items_cone = parseItemsFromDB_cones();
+                items_artifact = parseItemsFromDB_artifacts();
+                items_item = parseItemsFromDB_items();
+                inventory_grid_cones.setAdapter(new InventoryAdapter(HomeScreen.this, items_cone));
+                inventory_grid_artifacts.setAdapter(new InventoryAdapter(HomeScreen.this, items_artifact));
+                inventory_grid_items.setAdapter(new InventoryAdapter(HomeScreen.this, items_item));
+
                 /*for(DataSnapshot ds : dataSnapshot.getChildren())
                 {
                     User user = ds.getValue(User.class);
@@ -266,35 +291,27 @@ public class HomeScreen extends AppCompatActivity {
     }
 
     public void openMemories(){
-        /*startActivity(new Intent(HomeScreen.this, MemoriesScreen.class).putExtra("gems", current_user_data.getGems()));
-        //startActivity(new Intent(MainActivity.this, ReadActivity.class));
-        releaseResources();
-        finish();*/
         memories_screen.setVisibility(View.VISIBLE);
         home_screen.setVisibility(View.GONE);
     }
 
     private void releaseResources() {
         ost1.stop();
+        ost1.setLooping(false);
     }
     public void init_all(){
 
         home_screen = findViewById(R.id.home_screen);
         memories_screen = findViewById(R.id.memories_screen);
-        backHome = findViewById(R.id.memoriesToHome);
-        pull = findViewById(R.id.pull);
-        pull_10 = findViewById(R.id.pull_10);
-        gems1 = findViewById(R.id.gems1);
-        pulls = findViewById(R.id.pulls);
-        pull_animation_screen = findViewById(R.id.pull_animation_screen);
-        pull_animation_1 = findViewById(R.id.pull_animation1);
+        gems_inv = findViewById(R.id.gems_inv);
+        gold_inv = findViewById(R.id.gold_inv);
+        eventsLayout = findViewById(R.id.events_window);
+        eventsToHome = findViewById(R.id.eventsToHome);
         //Uri myVideoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.pull_3star);
         //pull_animation_1.setVideoURI(myVideoUri);
         //pull_animation_1.seekTo(0);
-        pull_ost = MediaPlayer.create(this, R.raw.pull_ost);
+
         profile_bar = findViewById(R.id.profile_bar);
-        profile_to_home = findViewById(R.id.profile_to_home);
-        profile_screen = findViewById(R.id.profile_screen);
         rating_button = findViewById(R.id.rating_button);
         settings_button = findViewById(R.id.settings_button);
         inventory_button = findViewById(R.id.inventory_button);
@@ -305,7 +322,48 @@ public class HomeScreen extends AppCompatActivity {
         rating_to_home = findViewById(R.id.rating_to_home);
         inventory_to_home = findViewById(R.id.inventory_to_home);
         settings_to_home = findViewById(R.id.settings_to_home);
+        events_btn = findViewById(R.id.events_button);
 
+
+
+
+        // set inventory layout
+        coneIds = new ArrayList<>();
+        artifactIds = new ArrayList<>();
+        itemsIds = new ArrayList<>();
+        for (int i = 0; i < CONES_SIZE; i++) {
+            String objectPath = "raw/" + "cone" + (i + 1);
+            int resourceId = this.getResources().getIdentifier(objectPath, null, this.getPackageName());
+            coneIds.add(resourceId);
+        }
+        for (int i = 0; i < ARTIFACTS_SIZE; i++) {
+            String objectPath = "raw/" + "cone" + (i + 1);
+            int resourceId = this.getResources().getIdentifier(objectPath, null, this.getPackageName());
+            coneIds.add(resourceId);
+        }
+        for (int i = 0; i < ITEMS_SIZE; i++) {
+            String objectPath = "raw/" + "cone" + (i + 1);
+            int resourceId = this.getResources().getIdentifier(objectPath, null, this.getPackageName());
+            coneIds.add(resourceId);
+        }
+        inventory_section_name = findViewById(R.id.inventory_section_name);
+        inventory_section_name.setText("Cones");
+        cones_btn = findViewById(R.id.cones_btn);
+        artifacts_btn = findViewById(R.id.artifacts_btn);
+        items_btn = findViewById(R.id.items_btn);
+        /*
+        items_cone = parseItemsFromDB_cones();
+        items_artifact = parseItemsFromDB_artifacts();
+        items_item = parseItemsFromDB_items();
+         */
+        inventory_grid_cones = findViewById(R.id.inventory_grid_cones);
+        inventory_grid_artifacts = findViewById(R.id.inventory_grid_artifacts);
+        inventory_grid_items = findViewById(R.id.inventory_grid_items);
+        /*
+        inventory_grid_cones.setAdapter(new InventoryAdapter(this, items_cone));
+        inventory_grid_artifacts.setAdapter(new InventoryAdapter(this, items_artifact));
+        inventory_grid_items.setAdapter(new InventoryAdapter(this, items_item));
+         */
         // settings screen vars
         volume_seek_bar = findViewById(R.id.volume_seek_bar);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -334,77 +392,124 @@ public class HomeScreen extends AppCompatActivity {
         get_gems = findViewById(R.id.gain_gems);
         memories_btn = findViewById(R.id.memories);
 
-        pull_layout = findViewById(R.id.pull_window);
-        dialog = new Dialog(HomeScreen.this, R.style.myFullscreenAlertDialogStyle);
-        LayoutInflater inflater = LayoutInflater.from(this);
-        pull_window = inflater.inflate(R.layout.pull_window, null);
-        dialog.setContentView(pull_window);
-        item_name_field = (TextView) dialog.findViewById(R.id.item_name_field);
-        item_picture_field = (ShapeableImageView) dialog.findViewById(R.id.item_picture_field);
-        item_picture_field.setImageResource(R.drawable.card1);
-        star_sky = (SurfaceView) dialog.findViewById(R.id.star_sky);
-        pull_animation = new MediaPlayer();
-
-        SurfaceHolder.Callback callback1 = new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(@NonNull SurfaceHolder holder) {
-                pull_animation.setDisplay(sh1);
-            }
-
-            @Override
-            public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
-
-            }
 
 
-            @Override
-            public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
+        ArrayList<Integer> coneIds;
 
-            }
-        };
-        pull_surface = findViewById(R.id.pull_surface);
-        pull_surface.getHolder().addCallback(callback1);
+
+
+        music_switch = findViewById(R.id.music_button);
+        ost2 = MediaPlayer.create(HomeScreen.this, R.raw.ost2);
+        ost2.setLooping(true);
+        ost3 = MediaPlayer.create(HomeScreen.this, R.raw.ost3);
+        ost3.setLooping(true);
+        ost4 = MediaPlayer.create(HomeScreen.this, R.raw.ost4);
+        ost4.setLooping(true);
+
+        guild_button = findViewById(R.id.guild_button);
+        fragmentContainer = findViewById(R.id.fragment_container);
 
     }
 
 
+    public static List<InventoryItem> parseItemsFromFile_cones(Context context, int resourceId) {
+        List<InventoryItem> items = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(resourceId)))) {
+            String nameLine;
+            String descriptionLine;
+            while ((nameLine = br.readLine()) != null && (descriptionLine = br.readLine()) != null) {
+                String name = nameLine.substring(nameLine.indexOf(':') + 1).trim();
+                String description = descriptionLine.substring(descriptionLine.indexOf(':') + 1).trim();
+                items.add(new InventoryItem(R.drawable.cone1, name, description));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return items;
+    }
+    public static List<InventoryItem> parseItemsFromFile_artifacts(Context context, int resourceId) {
+        List<InventoryItem> items = new ArrayList<>();
+        int i = 0;
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(resourceId)))) {
+            String nameLine;
+            String descriptionLine;
+            while ((nameLine = br.readLine()) != null && (descriptionLine = br.readLine()) != null) {
+                String name = nameLine.substring(nameLine.indexOf(':') + 1).trim();
+                String description = descriptionLine.substring(descriptionLine.indexOf(':') + 1).trim();
+                items.add(new InventoryItem(R.drawable.cone2, name, description));
+                i++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return items;
+    }
+    public static List<InventoryItem> parseItemsFromFile_items(Context context, int resourceId) {
+        List<InventoryItem> items = new ArrayList<>();
+        int i = 0;
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(resourceId)))) {
+            String nameLine;
+            String descriptionLine;
+            while ((nameLine = br.readLine()) != null && (descriptionLine = br.readLine()) != null) {
+                String name = nameLine.substring(nameLine.indexOf(':') + 1).trim();
+                String description = descriptionLine.substring(descriptionLine.indexOf(':') + 1).trim();
+                items.add(new InventoryItem(R.drawable.cone3, name, description));
+                i++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return items;
+    }
+
+    public List<InventoryItem> parseItemsFromDB_cones() {
+        List<InventoryItem> obtained_items = new ArrayList<>();
+        List<InventoryItem> all_items = current_user_data.getCones();
+        for (int i = 0; i < all_items.size(); i++){
+            if (all_items.get(i).getIs_obtained())
+                obtained_items.add(new InventoryItem(R.drawable.cone1, all_items.get(i).getName(), all_items.get(i).getDescription(), "function" + i));
+                //obtained_items.add(all_items.get(i));
+        }
+        return obtained_items;
+    }
+    public List<InventoryItem> parseItemsFromDB_artifacts() {
+        List<InventoryItem> obtained_items = new ArrayList<>();
+        List<InventoryItem> all_items = current_user_data.getArtifacts();
+        for (int i = 0; i < all_items.size(); i++){
+            if (all_items.get(i).getIs_obtained())
+                obtained_items.add(all_items.get(i));
+        }
+        return obtained_items;
+    }
+    public List<InventoryItem> parseItemsFromDB_items() {
+        List<InventoryItem> obtained_items = new ArrayList<>();
+        List<InventoryItem> all_items = current_user_data.getItems();
+        for (int i = 0; i < all_items.size(); i++){
+            if (all_items.get(i).getIs_obtained())
+                obtained_items.add(all_items.get(i));
+        }
+        return obtained_items;
+    }
+
     private void setOnclickListeners(){
-        backHome.setOnClickListener(new View.OnClickListener() {
+
+
+        events_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                home_screen.setVisibility(View.VISIBLE);
-                memories_screen.setVisibility(View.GONE);
+            public void onClick(View v) {
+                eventsLayout.setVisibility(View.VISIBLE);
             }
         });
-        pull.setOnClickListener(new View.OnClickListener() {
+        eventsToHome.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (current_user_data.getPulls() > 0){
-                    current_user_data.gainPulls(-1, usersData);
-                    ArrayList<pair> loot_list = new ArrayList<>();
-                    loot_list.add(makeSinglePull());
-                    showPullAnimation_10(loot_list.get(0).first, loot_list);
-                } else if (current_user_data.getGems() >= 150) {
-                    current_user_data.gainGems(-150, usersData);
-                    ArrayList<pair> loot_list = new ArrayList<>();
-                    loot_list.add(makeSinglePull());
-                    showPullAnimation_10(loot_list.get(0).first, loot_list);
-                }
+            public void onClick(View v) {
+                eventsLayout.setVisibility(View.GONE);
             }
         });
 
-        pull_10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (current_user_data.getPulls() >= 10){
-                    current_user_data.gainPulls(-10, usersData);
-                    make10Pull();
-                } else if (current_user_data.getGems() >= 1500) {
-                    current_user_data.gainGems(-1500, usersData);
-                    make10Pull();
-                }
-            }
-        });
 
         get_exp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -430,27 +535,24 @@ public class HomeScreen extends AppCompatActivity {
         memories_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openMemories();
+                replace_fragment();
+
+
+                //openMemories();
             }
         });
-        pull_animation_1.setOnClickListener(new View.OnClickListener() {
+        /*pull_animation_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pull_animation_1.seekTo(pull_animation_1.getDuration());
             }
-        });
+        });*/
         profile_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                profile_screen.setVisibility(View.VISIBLE);
-                home_screen.setVisibility(View.GONE);
-            }
-        });
-        profile_to_home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                home_screen.setVisibility(View.VISIBLE);
-                profile_screen.setVisibility(View.GONE);
+                startActivity(new Intent(HomeScreen.this, Profile_screen.class));
+                releaseResources();
+                finish();
             }
         });
 
@@ -483,6 +585,33 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
+        cones_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inventory_section_name.setText("Cones");
+                inventory_grid_cones.setVisibility(View.VISIBLE);
+                inventory_grid_artifacts.setVisibility(View.GONE);
+                inventory_grid_items.setVisibility(View.GONE);
+            }
+        });
+        artifacts_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inventory_section_name.setText("Artifacts");
+                inventory_grid_artifacts.setVisibility(View.VISIBLE);
+                inventory_grid_cones.setVisibility(View.GONE);
+                inventory_grid_items.setVisibility(View.GONE);
+            }
+        });
+        items_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inventory_section_name.setText("Items");
+                inventory_grid_items.setVisibility(View.VISIBLE);
+                inventory_grid_cones.setVisibility(View.GONE);
+                inventory_grid_artifacts.setVisibility(View.GONE);
+            }
+        });
         inventory_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -503,13 +632,70 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HomeScreen.this, Characters.class));
+                releaseResources();
                 finish();
                 //startActivity(new Intent(MainActivity.this, ReadActivity.class));
             }
         });
 
+        music_switch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ost1.isPlaying())
+                {
+                    ost1.pause();
+                    ost2.seekTo(0);
+                    ost2.start();
+                    //music_switch.setText("HOYO-MiX — Moon Halo");
+                }
+                else if (ost2.isPlaying()){
+                    ost2.pause();
+                    ost3.seekTo(0);
+                    ost3.start();
+                    //music_switch.setText("Aimer — escalate");
+                }
+                else if (ost3.isPlaying()){
+                    ost3.pause();
+                    ost4.seekTo(0);
+                    ost4.start();
+                    //music_switch.setText("Tokio Hotel - Monsoon");
+                }
+                else if (ost4.isPlaying()){
+                    ost4.pause();
+                    ost1.seekTo(0);
+                    ost1.start();
+                    //music_switch.setText("HOYO-MiX — Hidden Dreams in the Depths");
+                }
+
+            }
+        });
 
 
+        guild_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //replace_fragment();
+
+            }
+        });
+
+
+    }
+
+    private void replace_fragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        if (currentFragment == null) {
+            fragmentTransaction.replace(R.id.fragment_container, new Gacha_screen());
+        } else if (currentFragment instanceof Gacha_screen) {
+            fragmentTransaction.replace(R.id.fragment_container, new fragment2());
+            
+        }
+        else
+            fragmentTransaction.replace(R.id.fragment_container, new Gacha_screen());
+        fragmentTransaction.commit();
+        home_screen.setVisibility(View.GONE);
     }
 
     public void setOnCompletionListeners(){
@@ -566,300 +752,20 @@ public class HomeScreen extends AppCompatActivity {
 
     }
 
-    private void make10Pull() {
-        ArrayList<pair> loot_list = new ArrayList<>();
-        // fill 10 slots
-        for (int i = 0; i < 10; i++) {
-            loot_list.add(makeSinglePull());
-        }
-        // determine the rarity of the best loot
-        Optional<pair> rarity = loot_list.stream().max(Comparator.comparingInt(pair -> pair.first));
-        showPullAnimation_10(rarity.get().first, loot_list);
+
+
+
+
+
+    @Override
+    public void onFragmentClosed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+// Затем удалите фрагмент
+        transaction.remove(new Gacha_screen());
+        transaction.commit();
+        fragmentContainer.setVisibility(View.GONE);
+        home_screen.setVisibility(View.VISIBLE);
     }
 
-    private pair makeSinglePull() {
-        Random random = new Random();
-        int rarity_value = random.nextInt(120);
-        int loot_value;
-        String loot;
-
-        current_user_data.setPulls_to_4star(current_user_data.getPulls_to_4star() + 1);
-        current_user_data.setPulls_to_5star(current_user_data.getPulls_to_5star() + 1);
-
-        // guarantee pulls
-        if (current_user_data.getPulls_to_5star() == 50){
-            loot_value = random.nextInt(loot_table_5star.length);
-            current_user_data.setLoot_table(current_user_data.generateLootTable(current_user_data.getLoot_table()));
-            loot = loot_table_5star[loot_value];
-            current_user_data.updatePulls_to_5star(0, usersData);
-            ost1.pause();
-            return new pair(5, loot_value);
-        }
-        if (current_user_data.getPulls_to_4star() == 10){
-            loot_value = random.nextInt(loot_table_4star.length);
-            loot = loot_table_4star[loot_value];
-            current_user_data.updatePulls_to_4star(0, usersData);
-            ost1.pause();
-            return new pair(4, loot_value);
-        }
-
-
-        if (current_user_data.getLoot_table() == null)
-            current_user_data.setLoot_table(current_user_data.generateLootTable(current_user_data.getLoot_table()));
-
-        // normal pulls
-        while (current_user_data.getLoot_table().get(rarity_value).second != 0)
-            rarity_value = random.nextInt(120);
-
-        if (current_user_data.getLoot_table().get(rarity_value).first == 3) {
-            loot_value = random.nextInt(loot_table_3star.length);
-            loot = loot_table_3star[loot_value];
-            current_user_data.updatePulls_to_4star(current_user_data.getPulls_to_4star(), usersData);
-            current_user_data.updatePulls_to_5star(current_user_data.getPulls_to_5star(), usersData);
-            current_user_data.update_loot_table(rarity_value, usersData);
-        } else if (current_user_data.getLoot_table().get(rarity_value).first == 4) {
-            loot_value = random.nextInt(loot_table_4star.length);
-            loot = loot_table_4star[loot_value];
-            current_user_data.updatePulls_to_4star(0, usersData);
-            current_user_data.update_loot_table(rarity_value, usersData);
-        } else {
-            loot_value = random.nextInt(loot_table_5star.length);
-            current_user_data.updatePulls_to_5star(0, usersData);
-            current_user_data.setLoot_table(current_user_data.generateLootTable(current_user_data.getLoot_table()));
-            loot = loot_table_5star[loot_value];
-        }
-
-        if (ost1.isPlaying())
-            ost1.pause();
-        return new pair(current_user_data.getLoot_table().get(rarity_value).first, loot_value);
-    }
-    public void showPullAnimation1(int rarity, int value) {
-        Uri myVideoUri;
-        switch (rarity){
-            case 3:
-                myVideoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.pull_3star);
-                pull_animation_1.setVideoURI(myVideoUri);
-                break;
-            case 4:
-                myVideoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.pull_4star);
-                pull_animation_1.setVideoURI(myVideoUri);
-                break;
-            case 5:
-                myVideoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.pull_5star);
-                pull_animation_1.setVideoURI(myVideoUri);
-                break;
-            default:
-                break;
-        }
-        pull_animation_1.setVisibility(View.VISIBLE);
-        pull_animation_screen.setVisibility(View.VISIBLE);
-        memories_screen.setVisibility(View.GONE);
-        pull_animation_1.start();
-        pull_animation_1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                memories_screen.setVisibility(View.VISIBLE);
-                pull_animation_screen.setVisibility(View.GONE);
-                pull_animation_1.setVisibility(View.GONE);
-                if (!pull_ost.isPlaying())
-                    pull_ost.start();
-                showLootAnimation(rarity, value);
-            }
-        });
-
-    }
-
-    private void showLootAnimation(int rarity, int value) {
-        switch (rarity){
-            case 3:
-                item_name_field.setText(loot_table_3star[value]);
-                break;
-            case 4:
-                item_name_field.setText(loot_table_4star[value]);
-                break;
-            case 5:
-                item_name_field.setText(loot_table_5star[value]);
-                break;
-            default:
-                break;
-        }
-        dialog.show();
-        pull_window.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pull_ost.pause();
-                pull_ost.seekTo(0);
-                dialog.dismiss();
-                if(!ost1.isPlaying())
-                    ost1.start();
-            }
-        });
-    }
-
-    private void showLootAnimation_10(ArrayList<pair> loot_list, int i) {
-        //set default params
-
-        item_name_field.setVisibility(View.GONE);
-
-        item_picture_field.setRotation(0);
-        item_picture_field.setAlpha((float) 0);
-        item_picture_field.setRotationY(0);
-        item_picture_field.setTranslationY(0);
-        item_picture_field.setTranslationX(0);
-
-        item_name_field.setTranslationX(0);
-        item_name_field.setAlpha((float) 0);
-
-        if (engine == null || engine.isStopped())
-            engine = new Engine(star_sky);
-        // animate image
-        //item_picture_field.animate().setDuration(1000).translationY(750).rotationYBy(355f).rotation(10).alpha(1);
-        ViewPropertyAnimator animation = item_picture_field.animate().setDuration(1000).translationY(750).rotationYBy(355f).rotation(10).alpha(1);
-        animation.setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(@NonNull Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(@NonNull Animator animation) {
-                item_name_field.animate().cancel();
-                item_name_field.setTranslationX(0);
-                item_name_field.setAlpha((float) 0);
-                item_name_field.setVisibility(View.VISIBLE);
-                item_name_field.animate().setDuration(2000).translationX(-450).alpha(1);
-            }
-
-            @Override
-            public void onAnimationCancel(@NonNull Animator animation) {
-                item_name_field.animate().cancel();
-            }
-
-            @Override
-            public void onAnimationRepeat(@NonNull Animator animation) {
-
-            }
-        });
-
-
-
-
-/*
-        // wait animation
-        if (!loot_wait_animation.isPlaying())
-            loot_wait_animation.start();*/
-
-        switch (loot_list.get(i).first) {
-            case 3:
-                item_name_field.setText(loot_table_3star[loot_list.get(i).second]);
-                break;
-            case 4:
-                item_name_field.setText(loot_table_4star[loot_list.get(i).second]);
-                break;
-            case 5:
-                item_name_field.setText(loot_table_5star[loot_list.get(i).second]);
-                break;
-            default:
-                break;
-        }
-
-
-        // show animation
-        dialog.show();
-
-
-
-        // switch to next item animation
-        pull_window.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //dialog.dismiss();
-                if (i != loot_list.size() - 1) {
-                    animation.cancel();
-                    showLootAnimation_10(loot_list, i + 1);
-                }
-                else {
-                    pull_ost.pause();
-                    pull_ost.seekTo(0);
-                    dialog.dismiss();
-                    engine.stop();
-                    if(!ost1.isPlaying())
-                        ost1.start();
-                }
-            }
-        });
-
-    }
-
-    public void showPullAnimation_10(int max_rarity, ArrayList<pair> loot_list) {
-        pull_animation = new MediaPlayer();
-        try {
-            switch (max_rarity) {
-                case 3:
-                    pull_animation.setDataSource(HomeScreen.this, Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.pull_3star));
-                    break;
-                case 4:
-                    pull_animation.setDataSource(HomeScreen.this, Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.pull_4star));
-                    break;
-                case 5:
-                    pull_animation.setDataSource(HomeScreen.this, Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.pull_5star));
-                    break;
-                default:
-                    break;
-            }
-        } catch (IOException e) {
-            pull_animation.reset();
-            try {
-                switch (max_rarity) {
-                    case 3:
-                        pull_animation.setDataSource(HomeScreen.this, Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.pull_3star));
-                        break;
-                    case 4:
-                        pull_animation.setDataSource(HomeScreen.this, Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.pull_4star));
-                        break;
-                    case 5:
-                        pull_animation.setDataSource(HomeScreen.this, Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.pull_5star));
-                        break;
-                    default:
-                        break;
-                }
-            }
-                catch (IOException e1) {
-                    throw new RuntimeException(e1);
-                }
-        }
-        try {
-            pull_animation.prepare();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        pull_animation.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                pull_surface.setVisibility(View.VISIBLE);
-                sh1 = pull_surface.getHolder();
-                pull_animation.start();
-            }
-        });
-        //pull_animation_1.setVisibility(View.VISIBLE);
-        pull_animation_screen.setVisibility(View.VISIBLE);
-        memories_screen.setVisibility(View.GONE);
-        //pull_animation_1.start();
-        pull_animation.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                memories_screen.setVisibility(View.VISIBLE);
-                pull_animation_screen.setVisibility(View.GONE);
-                pull_surface.setVisibility(View.GONE);
-                pull_animation.reset();
-                //if (!pull_ost.isPlaying())
-                    //pull_ost.start();
-                showLootAnimation_10(loot_list, 0);
-            }
-        });
-
-    }
-
-
-    }
+}

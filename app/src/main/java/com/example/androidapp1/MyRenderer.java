@@ -1,3 +1,4 @@
+// Class for rendering 3d objects
 package com.example.androidapp1;
 
 import android.content.Context;
@@ -68,6 +69,11 @@ public class MyRenderer extends Renderer {
 
     @Override
     protected void initScene() {
+
+
+    }
+
+    public void loadModels() {
         getCurrentScene().setBackgroundColor(0, 0, 0, 0);
         Camera camera = getCurrentCamera();
 
@@ -79,13 +85,10 @@ public class MyRenderer extends Renderer {
 
         camera.setPosition(x, 4, z);//0 4 5
 
-        DirectionalLight key = new DirectionalLight(-3,-4,-5);
+        /*DirectionalLight key = new DirectionalLight(-3,-4,-5);
         key.setColor(1.0f, 1.0f, 1.0f);
         key.setPower(2);
-        getCurrentScene().addLight(key);
-
-
-
+        getCurrentScene().addLight(key);*/
         for (int ind = 1; ind <= 10; ind++) {
             String objectPath = "raw/" + character_name + ind;
             int resourceId = getContext().getResources().getIdentifier(objectPath, null, getContext().getPackageName());
@@ -106,24 +109,12 @@ public class MyRenderer extends Renderer {
             }
         }
 
-
-
-        /*LoaderOBJ loader = new LoaderOBJ(getContext().getResources(), mTextureManager, R.raw.platform);
-        try {
-            loader.parse();
-            Object3D object3D = loader.getParsedObject();
-            object3D.setScale(10.0f);
-            object3D.setY(-0.5);
-            getCurrentScene().addChild(object3D);
-        } catch (ParsingException e) {
-            throw new RuntimeException(e);
-        }*/
-
         try {
             // Create and start the media player
             mMediaPlayer = MediaPlayer.create(getContext(), R.raw.bg5);
             mMediaPlayer.setLooping(true);
             mMediaPlayer.start();
+            mMediaPlayer.setVideoScalingMode(2);
 
             // Create the video texture
             mVideoTexture = new StreamingTexture("videoTexture", mMediaPlayer);
@@ -133,12 +124,8 @@ public class MyRenderer extends Renderer {
             material.setColorInfluence(0);
             material.addTexture(mVideoTexture);
 
-            // Create a sphere with inverted normals
-            //Sphere sphere = new Sphere(30, 64, 32);
-            //sphere.setScaleX(-1);  // Inverts the normals
-
-            int sphereSegments = 256; // Increase this value to increase sphere geometry complexity
-            Sphere sphere = new Sphere(55, sphereSegments, sphereSegments);
+            int sphereSegments = 1024; // Increase this value to increase sphere geometry complexity
+            Sphere sphere = new Sphere(15, sphereSegments, sphereSegments);
             sphere.setScaleX(-1);
             // Apply the material to the sphere
             sphere.setMaterial(material);
@@ -150,8 +137,6 @@ public class MyRenderer extends Renderer {
         }
 
 
-
-
         // Always look at the center of the first object in the list
         if(!objects3D.isEmpty()) {
             camera.setLookAt(objects3D.get(0).getPosition().x, objects3D.get(0).getPosition().y + 2, objects3D.get(0).getPosition().z);
@@ -161,7 +146,6 @@ public class MyRenderer extends Renderer {
         int surfaceHeight = getViewportHeight();
         camera.setProjectionMatrix(surfaceWidth, surfaceHeight);
     }
-
 
     public void setObjects3D(ArrayList<Object3D> objects3D) {
         this.objects3D = objects3D;
@@ -283,7 +267,5 @@ public class MyRenderer extends Renderer {
         super.onResume();
         if (mMediaPlayer != null) mMediaPlayer.start();
     }
-
-
 
 }

@@ -6,9 +6,24 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class UserData {
+
+    // Объявление синглтона
+    private static UserData instance;
+
+    private UserData() {
+        // Приватный конструктор, чтобы нельзя было создать объект извне.
+    }
+    // Метод для получения экземпляра синглтона
+    public static synchronized UserData getInstance() {
+        if (instance == null) {
+            instance = new UserData();
+        }
+        return instance;
+    }
     private int exp;
     private int gold;
     private int gems;
@@ -21,7 +36,14 @@ public class UserData {
     private int pulls_to_5star;
     // loot table where first value - loot rarity, second - status
     ArrayList<pair> loot_table;
-    //private GameCharacter gameCharacter;
+
+    // inventory items
+    List<InventoryItem> cones = new ArrayList<>();
+    List<InventoryItem> artifacts = new ArrayList<>();
+    List<InventoryItem> items = new ArrayList<>();
+
+
+    private ArrayList<Character> characters;
 
     public ArrayList<pair> generateLootTable(ArrayList<pair> table){
         if (table != null)
@@ -74,7 +96,6 @@ public class UserData {
     }
     //private Equipment equipment;
 
-    public UserData(){}
     public int getLvl() {
         return lvl;
     }
@@ -162,5 +183,46 @@ public class UserData {
 
     public void setPulls_to_5star(int pulls_to_5star) {
         this.pulls_to_5star = pulls_to_5star;
+    }
+
+    public ArrayList<Character> getCharacters() {
+        return characters;
+    }
+
+    public void setCharacters(ArrayList<Character> characters) {
+        this.characters = characters;
+    }
+
+    public Character getCharacterByName(String name){
+        for (Character el: characters) {
+            if (el.getName() == name)
+                return el;
+        }
+        return null;
+    }
+
+
+    public List<InventoryItem> getCones() {
+        return cones;
+    }
+
+    public void setCones(List<InventoryItem> cones) {
+        this.cones = cones;
+    }
+
+    public List<InventoryItem> getArtifacts() {
+        return artifacts;
+    }
+
+    public void setArtifacts(List<InventoryItem> artifacts) {
+        this.artifacts = artifacts;
+    }
+
+    public List<InventoryItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<InventoryItem> items) {
+        this.items = items;
     }
 }

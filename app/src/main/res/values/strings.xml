@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">AndroidApp1</string>
+    <string name="app_name">Houkai Sekai</string>
     <string name="reg_text"><u>Register</u></string>
     <string name="sign_in_text">Sign in</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
