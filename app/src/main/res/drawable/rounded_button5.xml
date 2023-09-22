@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#BB6770F1" /> <!-- Set the desired transparency level (here, semi-transparent black) -->
+    <corners android:radius="20dp" /> <!-- Set the radius for rounded corners (adjust as per your preference) -->
+
+</shape>
