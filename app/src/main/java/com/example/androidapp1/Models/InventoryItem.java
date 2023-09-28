@@ -10,10 +10,26 @@ public class InventoryItem {
     private String description;
     private String function;
     private ArrayList<Integer> stats;
+    private int rarity;
 
 
 
     private boolean is_obtained = false;
+
+    public int getRarity() {
+        return rarity;
+    }
+
+    public void setRarity(int rarity) {
+        this.rarity = rarity;
+    }
+
+    public InventoryItem(int imageResource, String name, String description, int rarity) {
+        ImageResource = imageResource;
+        this.name = name;
+        this.description = description;
+        this.rarity = rarity;
+    }
 
     public InventoryItem(int imageResource, String name, String description) {
         ImageResource = imageResource;
@@ -37,6 +53,13 @@ public class InventoryItem {
         this.name = name;
         this.description = description;
         this.function = function;
+    }
+    public InventoryItem(int imageResource, String name, String description, String function, int rarity) {
+        ImageResource = imageResource;
+        this.name = name;
+        this.description = description;
+        this.function = function;
+        this.rarity = rarity;
     }
 
     public InventoryItem(String name, String description) {

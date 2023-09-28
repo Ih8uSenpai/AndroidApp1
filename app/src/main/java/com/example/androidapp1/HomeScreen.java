@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -414,13 +415,18 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
 
     public static List<InventoryItem> parseItemsFromFile_cones(Context context, int resourceId) {
         List<InventoryItem> items = new ArrayList<>();
+        int i = 0;
+        int rarity = 3;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(resourceId)))) {
             String nameLine;
             String descriptionLine;
             while ((nameLine = br.readLine()) != null && (descriptionLine = br.readLine()) != null) {
+                if (i >= 8)
+                    rarity = 4;
                 String name = nameLine.substring(nameLine.indexOf(':') + 1).trim();
                 String description = descriptionLine.substring(descriptionLine.indexOf(':') + 1).trim();
-                items.add(new InventoryItem(R.drawable.cone1, name, description));
+                items.add(new InventoryItem(R.drawable.cone1, name, description, rarity));
+                i++;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -430,7 +436,7 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
     }
     public static List<InventoryItem> parseItemsFromFile_artifacts(Context context, int resourceId) {
         List<InventoryItem> items = new ArrayList<>();
-        int i = 0;
+
         try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(resourceId)))) {
             String nameLine;
             String descriptionLine;
@@ -438,13 +444,66 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
                 String name = nameLine.substring(nameLine.indexOf(':') + 1).trim();
                 String description = descriptionLine.substring(descriptionLine.indexOf(':') + 1).trim();
                 items.add(new InventoryItem(R.drawable.cone2, name, description));
-                i++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return items;
+    }
+    public static int getDrawableCone(int i){
+        int cone = 0;
+        switch (i){
+            case 1:
+                cone = R.drawable.cone1;
+                break;
+            case 2:
+                cone = R.drawable.cone2;
+                break;
+            case 3:
+                cone = R.drawable.cone3;
+                break;
+            case 4:
+                cone = R.drawable.cone1;
+                break;
+            case 5:
+                cone = R.drawable.cone1;
+                break;
+            case 6:
+                cone = R.drawable.cone1;
+                break;
+            case 7:
+                cone = R.drawable.cone1;
+                break;
+            case 8:
+                cone = R.drawable.cone1;
+                break;
+            case 9:
+                cone = R.drawable.cone1;
+                break;
+            case 10:
+                cone = R.drawable.cone1;
+                break;
+            case 11:
+                cone = R.drawable.cone1;
+                break;
+            case 12:
+                cone = R.drawable.cone1;
+                break;
+            case 13:
+                cone = R.drawable.cone1;
+                break;
+            case 14:
+                cone = R.drawable.cone1;
+                break;
+            case 15:
+                cone = R.drawable.cone1;
+                break;
+            case 16:
+                cone = R.drawable.cone1;
+                break;
+        }
+        return cone;
     }
     public static List<InventoryItem> parseItemsFromFile_items(Context context, int resourceId) {
         List<InventoryItem> items = new ArrayList<>();
@@ -470,7 +529,10 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
         List<InventoryItem> all_items = current_user_data.getCones();
         for (int i = 0; i < all_items.size(); i++){
             if (all_items.get(i).getIs_obtained())
-                obtained_items.add(new InventoryItem(R.drawable.cone1, all_items.get(i).getName(), all_items.get(i).getDescription(), "function" + i));
+                obtained_items.add(new InventoryItem(getDrawableCone(i + 1),
+                        all_items.get(i).getName(),
+                        all_items.get(i).getDescription(),
+                        "function" + i, all_items.get(i).getRarity()));
                 //obtained_items.add(all_items.get(i));
         }
         return obtained_items;

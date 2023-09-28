@@ -13,4 +13,7 @@
     <color name="blue">#3363ff</color>
     <color name="gray">#000000</color>
     <color name="pink">#ff78b7</color>
+    <color name="light_orange">#AAFF9900</color>
+    <color name="light_blue">#AA3363ff</color>
+    <color name="light_purple">#BBBB86FC</color>
 </resources>

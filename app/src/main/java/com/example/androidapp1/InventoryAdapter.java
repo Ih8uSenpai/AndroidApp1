@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.androidapp1.Models.InventoryItem;
@@ -46,11 +47,25 @@ public class InventoryAdapter extends BaseAdapter {
 
         ImageView itemImage = convertView.findViewById(R.id.item_image);
         TextView itemName = convertView.findViewById(R.id.item_name);
+        ImageView star4 = convertView.findViewById(R.id.star4);
+        ImageView star5 = convertView.findViewById(R.id.star5);
+        LinearLayout item_background = convertView.findViewById(R.id.item_background);
 
+        // get current item data
         InventoryItem item = items.get(position);
+
+        // set item appearance
         itemImage.setImageResource(item.getImageResource());
         itemName.setText(item.getName());
-
+        if (item.getRarity() == 4) {
+            star4.setVisibility(View.VISIBLE);
+            item_background.setBackgroundResource(R.color.light_purple);
+        }
+        if (item.getRarity() == 5) {
+            star4.setVisibility(View.VISIBLE);
+            star5.setVisibility(View.VISIBLE);
+            item_background.setBackgroundResource(R.color.light_orange);
+        }
         return convertView;
     }
 }

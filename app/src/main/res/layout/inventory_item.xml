@@ -6,7 +6,7 @@
     android:layout_height="75dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="#660000FF">
+    android:background="@color/light_blue">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="62dp">
@@ -95,12 +95,14 @@
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:src="@drawable/star"
+                android:visibility="gone"
                 />
             <ImageView
                 android:id="@+id/star5"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:src="@drawable/star"
+                android:visibility="gone"
                 />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -53,7 +53,7 @@ public class Gacha_screen extends Fragment {
     TextView gems1, gold;
 
     ImageView banner_background;
-    ImageButton char_banner, cones_banner, toHome;
+    ImageButton toHome;
     boolean isEventBanner, isStandartBanner, isCharacterBanner, isConesBanner;
     ConstraintLayout pull_animation_screen;
     VideoView pull_animation_1;
@@ -92,8 +92,6 @@ public class Gacha_screen extends Fragment {
 
     public void init(){
         event_banner = view.findViewById(R.id.event_banner_button);
-        char_banner = view.findViewById(R.id.banner_characters);
-        cones_banner = view.findViewById(R.id.banner_cones);
         event_banner = view.findViewById(R.id.event_banner_button);
         standart_banner = view.findViewById(R.id.standart_banner_button);
         banner_background = view.findViewById(R.id.banner_background);
@@ -187,22 +185,6 @@ public class Gacha_screen extends Fragment {
             public void onClick(View v) {
                 isEventBanner = true;
                 isStandartBanner = false;
-                change_banner();
-            }
-        });
-        char_banner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isCharacterBanner = true;
-                isConesBanner = false;
-                change_banner();
-            }
-        });
-        cones_banner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isConesBanner = true;
-                isCharacterBanner = false;
                 change_banner();
             }
         });

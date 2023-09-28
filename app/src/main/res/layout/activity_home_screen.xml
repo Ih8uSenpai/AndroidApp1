@@ -394,8 +394,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="NICKNAME"
-                android:fontFamily="@font/star_renegades1"
                 android:textColor="@color/white"
+                android:textAllCaps="false"
                 android:textSize="20sp" />
 
             <ProgressBar
