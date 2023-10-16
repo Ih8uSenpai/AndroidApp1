@@ -9,7 +9,7 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".activities.AuthorizationActivity">
 
     <TextView
         android:id="@+id/touch_screen_text"

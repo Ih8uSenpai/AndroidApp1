@@ -1,5 +1,5 @@
 // Class for rendering 3d objects
-package com.example.androidapp1;
+package com.example.androidapp1.utils;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +11,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.GestureDetectorCompat;
+
+import com.example.androidapp1.R;
 
 import org.rajawali3d.Object3D;
 import org.rajawali3d.cameras.Camera;

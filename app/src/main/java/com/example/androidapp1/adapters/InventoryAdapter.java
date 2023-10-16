@@ -1,6 +1,5 @@
-package com.example.androidapp1;
+package com.example.androidapp1.adapters;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.androidapp1.Models.InventoryItem;
+import com.example.androidapp1.models.InventoryItem;
+import com.example.androidapp1.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryAdapter extends BaseAdapter {

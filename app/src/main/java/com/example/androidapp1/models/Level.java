@@ -1,4 +1,4 @@
-package com.example.androidapp1.Models;
+package com.example.androidapp1.models;
 
 
 public class Level {
@@ -9,7 +9,7 @@ public class Level {
     }
 
 
-    final int[] exp_table  = new int[] {100, 200, 320, 450, 600, 850, 1200, 1600, 2200, 3000,
+    static final int[] exp_table  = new int[] {100, 200, 320, 450, 600, 850, 1200, 1600, 2200, 3000,
             3751, 4212, 4912, 5921, 7123, 8234, 9653, 10923, 12402, 14329,
             16481, 18982, 21424, 24021, 27965, 32420, 36831, 41242, 47634, 55131,
             62521, 70123, 79123, 89123, 103211, 112381, 124181, 137123, 151271, 165247,

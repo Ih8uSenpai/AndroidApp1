@@ -1,4 +1,4 @@
-package com.example.androidapp1;
+package com.example.androidapp1.activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +11,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-public class Profile_screen extends AppCompatActivity {
+import com.example.androidapp1.R;
+
+public class ProfileActivity extends AppCompatActivity {
 
     ImageButton profile_to_home;
     EditText userDescription;
@@ -32,7 +34,7 @@ public class Profile_screen extends AppCompatActivity {
         profile_to_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Profile_screen.this, HomeScreen.class));
+                startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
                 finish();
             }
         });

@@ -1,4 +1,4 @@
-package com.example.androidapp1;
+package com.example.androidapp1.fragments;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.androidapp1.R;
 
 public class fragment2 extends Fragment {
 

@@ -1,4 +1,4 @@
-package com.example.androidapp1.Models;
+package com.example.androidapp1.models;
 
 public class User {
     private String name, email, pass;

@@ -1,11 +1,11 @@
-package com.example.androidapp1;
+package com.example.androidapp1.fragments;
 
-import static com.example.androidapp1.HomeScreen.current_user_data;
-import static com.example.androidapp1.HomeScreen.loot_table_3star;
-import static com.example.androidapp1.HomeScreen.loot_table_4star;
-import static com.example.androidapp1.HomeScreen.loot_table_5star;
-import static com.example.androidapp1.HomeScreen.ost1;
-import static com.example.androidapp1.HomeScreen.usersData;
+import static com.example.androidapp1.activities.HomeActivity.current_user_data;
+import static com.example.androidapp1.activities.HomeActivity.loot_table_3star;
+import static com.example.androidapp1.activities.HomeActivity.loot_table_4star;
+import static com.example.androidapp1.activities.HomeActivity.loot_table_5star;
+import static com.example.androidapp1.activities.HomeActivity.ost1;
+import static com.example.androidapp1.activities.HomeActivity.usersData;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
@@ -18,8 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -32,20 +30,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.example.androidapp1.Models.UserData;
-import com.example.androidapp1.Models.pair;
+import com.example.androidapp1.utils.pair;
+import com.example.androidapp1.R;
 import com.google.android.material.imageview.ShapeableImageView;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
-public class Gacha_screen extends Fragment {
+public class GachaFragment extends Fragment {
 
     View view;
     AppCompatButton event_banner, standart_banner;

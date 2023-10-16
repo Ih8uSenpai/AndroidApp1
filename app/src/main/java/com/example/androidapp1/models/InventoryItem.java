@@ -1,4 +1,4 @@
-package com.example.androidapp1.Models;
+package com.example.androidapp1.models;
 
 import com.google.firebase.database.DatabaseReference;
 

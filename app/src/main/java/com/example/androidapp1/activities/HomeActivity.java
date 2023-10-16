@@ -1,4 +1,4 @@
-package com.example.androidapp1;
+package com.example.androidapp1.activities;
 
 
 import androidx.annotation.NonNull;
@@ -9,12 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.animation.Animator;
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -22,11 +19,7 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.view.LayoutInflater;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewPropertyAnimator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -39,13 +32,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.example.androidapp1.Models.InventoryItem;
-import com.example.androidapp1.Models.User;
-import com.example.androidapp1.Models.UserData;
-import com.example.androidapp1.Models.pair;
+import com.example.androidapp1.fragments.FragmentInteractionListener;
+import com.example.androidapp1.fragments.GachaFragment;
+import com.example.androidapp1.adapters.InventoryAdapter;
+import com.example.androidapp1.models.InventoryItem;
+import com.example.androidapp1.models.User;
+import com.example.androidapp1.models.UserData;
+import com.example.androidapp1.R;
 import com.example.androidapp1.engine.Engine;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -57,12 +52,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
-public class HomeScreen extends AppCompatActivity implements FragmentInteractionListener {
+public class HomeActivity extends AppCompatActivity implements FragmentInteractionListener {
 
     private static final int CONES_SIZE = 3;
     private static final int ARTIFACTS_SIZE = 5;
@@ -79,17 +71,20 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
             62521, 70123, 79123, 89123, 103211, 112381, 124181, 137123, 151271, 165247,
             181427, 196148, 216471, 238131, 260812, 284881, 310161, 342518, 381271, 459211,
             561412, 725219, 920001, 1201231, 1601231, 2301231, 3101231, 4101231, 5501231, 10501231, 17501231};
-    static String[] loot_table_3star = new String[]{"Threads of Fate", "Echoes of the Forgotten", "Veil of Serenity", "Glimmer of Hope", "Whispers of Time", "Mists of Solitude", "Eclipsed Moon", "Shattered Illusions"};
-    static String[] loot_table_4star = new String[]{"Codex of the Unfathomable", "Resonance of the Void", "Vortex of Forgotten Dreams", "Nexus of Cosmic Synchronicity", "Tempest of Calamity", "Phantasmal Crucible", "Odyssey of the Ancestral", "Aetherial Quasar"};
-    static String[] loot_table_5star = new String[]{"Kafka", "Kiana", "Blade"};
+    public static String[] loot_table_3star = new String[]{"Threads of Fate", "Echoes of the Forgotten", "Veil of Serenity", "Glimmer of Hope", "Whispers of Time", "Mists of Solitude", "Eclipsed Moon", "Shattered Illusions"};
+    public static String[] loot_table_4star = new String[]{"Codex of the Unfathomable", "Resonance of the Void", "Vortex of Forgotten Dreams", "Nexus of Cosmic Synchronicity", "Tempest of Calamity", "Phantasmal Crucible", "Odyssey of the Ancestral", "Aetherial Quasar"};
+    public static String[] loot_table_5star = new String[]{"Kafka", "Kiana", "Blade"};
     VideoView videoPlayer, play_button;
-    static MediaPlayer ost1, ost2, ost3, ost4;
+    public static MediaPlayer ost1;
+    static MediaPlayer ost2;
+    static MediaPlayer ost3;
+    static MediaPlayer ost4;
 
 
     //database
     FirebaseAuth auth;
     FirebaseDatabase db;
-    static DatabaseReference usersData;
+    public static DatabaseReference usersData;
     DatabaseReference users;
     ConstraintLayout root;
 
@@ -104,7 +99,7 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
     AppCompatButton get_gems;
     ImageButton memories_btn;
     User current_user;
-    static UserData current_user_data;
+    public static UserData current_user_data;
     ArrayAdapter adapter;
     ConstraintLayout home_screen;
     ConstraintLayout memories_screen;
@@ -261,9 +256,9 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
                 items_cone = parseItemsFromDB_cones();
                 items_artifact = parseItemsFromDB_artifacts();
                 items_item = parseItemsFromDB_items();
-                inventory_grid_cones.setAdapter(new InventoryAdapter(HomeScreen.this, items_cone));
-                inventory_grid_artifacts.setAdapter(new InventoryAdapter(HomeScreen.this, items_artifact));
-                inventory_grid_items.setAdapter(new InventoryAdapter(HomeScreen.this, items_item));
+                inventory_grid_cones.setAdapter(new InventoryAdapter(HomeActivity.this, items_cone));
+                inventory_grid_artifacts.setAdapter(new InventoryAdapter(HomeActivity.this, items_artifact));
+                inventory_grid_items.setAdapter(new InventoryAdapter(HomeActivity.this, items_item));
 
                 /*for(DataSnapshot ds : dataSnapshot.getChildren())
                 {
@@ -400,11 +395,11 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
 
 
         music_switch = findViewById(R.id.music_button);
-        ost2 = MediaPlayer.create(HomeScreen.this, R.raw.ost2);
+        ost2 = MediaPlayer.create(HomeActivity.this, R.raw.ost2);
         ost2.setLooping(true);
-        ost3 = MediaPlayer.create(HomeScreen.this, R.raw.ost3);
+        ost3 = MediaPlayer.create(HomeActivity.this, R.raw.ost3);
         ost3.setLooping(true);
-        ost4 = MediaPlayer.create(HomeScreen.this, R.raw.ost4);
+        ost4 = MediaPlayer.create(HomeActivity.this, R.raw.ost4);
         ost4.setLooping(true);
 
         guild_button = findViewById(R.id.guild_button);
@@ -612,7 +607,7 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
         profile_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeScreen.this, Profile_screen.class));
+                startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                 releaseResources();
                 finish();
             }
@@ -693,7 +688,7 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
         characters_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeScreen.this, Characters.class));
+                startActivity(new Intent(HomeActivity.this, CharactersActivity.class));
                 releaseResources();
                 finish();
                 //startActivity(new Intent(MainActivity.this, ReadActivity.class));
@@ -748,7 +743,7 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        fragmentTransaction.replace(R.id.fragment_container, new Gacha_screen());
+        fragmentTransaction.replace(R.id.fragment_container, new GachaFragment());
         /*if (currentFragment == null) {
             fragmentTransaction.replace(R.id.fragment_container, new Gacha_screen());
         } else if (currentFragment instanceof Gacha_screen) {
@@ -797,7 +792,7 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                Toast.makeText(HomeScreen.this, "Selected item: " + item, Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "Selected item: " + item, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -827,7 +822,7 @@ public class HomeScreen extends AppCompatActivity implements FragmentInteraction
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 // Затем удалите фрагмент
-        transaction.remove(new Gacha_screen());
+        transaction.remove(new GachaFragment());
         transaction.commit();
         fragmentContainer.setVisibility(View.GONE);
         home_screen.setVisibility(View.VISIBLE);

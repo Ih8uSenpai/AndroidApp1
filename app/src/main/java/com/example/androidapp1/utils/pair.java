@@ -1,4 +1,4 @@
-package com.example.androidapp1.Models;
+package com.example.androidapp1.utils;
 
 public class pair {
     public int first, second;

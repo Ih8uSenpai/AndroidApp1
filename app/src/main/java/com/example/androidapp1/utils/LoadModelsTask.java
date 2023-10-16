@@ -1,10 +1,7 @@
-package com.example.androidapp1;
+package com.example.androidapp1.utils;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 

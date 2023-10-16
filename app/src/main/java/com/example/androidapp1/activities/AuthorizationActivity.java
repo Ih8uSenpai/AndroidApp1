@@ -1,17 +1,15 @@
 // launch activity
-package com.example.androidapp1;
+package com.example.androidapp1.activities;
 
-import static com.example.androidapp1.HomeScreen.parseItemsFromFile_artifacts;
-import static com.example.androidapp1.HomeScreen.parseItemsFromFile_cones;
-import static com.example.androidapp1.HomeScreen.parseItemsFromFile_items;
+import static com.example.androidapp1.activities.HomeActivity.parseItemsFromFile_artifacts;
+import static com.example.androidapp1.activities.HomeActivity.parseItemsFromFile_cones;
+import static com.example.androidapp1.activities.HomeActivity.parseItemsFromFile_items;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -20,41 +18,33 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.example.androidapp1.Models.Character;
-import com.example.androidapp1.Models.InventoryItem;
-import com.example.androidapp1.Models.User;
-import com.example.androidapp1.Models.UserData;
-import com.example.androidapp1.Models.pair;
+import com.example.androidapp1.models.Character;
+import com.example.androidapp1.models.InventoryItem;
+import com.example.androidapp1.models.User;
+import com.example.androidapp1.models.UserData;
+import com.example.androidapp1.utils.pair;
+import com.example.androidapp1.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class AuthorizationActivity extends AppCompatActivity {
 
     private static final int CONES_SIZE = 3;
     private static final int ARTIFACTS_SIZE = 5;
@@ -95,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer.start();
                 touch_screen_text.setVisibility(View.VISIBLE);
                 // audio
-                ost1 = MediaPlayer.create(MainActivity.this, R.raw.ost1);
+                ost1 = MediaPlayer.create(AuthorizationActivity.this, R.raw.ost1);
                 ost1.setLooping(true);
                 ost1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
@@ -150,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void set_animations(){
-        Animation connectingAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.alpha_scale_animation);
+        Animation connectingAnimation = AnimationUtils.loadAnimation(AuthorizationActivity.this, R.anim.alpha_scale_animation);
         touch_screen_text.setAnimation(connectingAnimation);
         touch_screen_text.getAnimation().start();
     }
@@ -181,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                startActivity(new Intent(MainActivity.this, HomeScreen.class));
+                                startActivity(new Intent(AuthorizationActivity.this, HomeActivity.class));
                                 //startActivity(new Intent(MainActivity.this, ReadActivity.class));
                                 releaseResources();
                                 finish();
@@ -207,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 touch_screen_text.setVisibility(View.VISIBLE);
-                Animation connectingAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.alpha_scale_animation);
+                Animation connectingAnimation = AnimationUtils.loadAnimation(AuthorizationActivity.this, R.anim.alpha_scale_animation);
                 touch_screen_text.setAnimation(connectingAnimation);
                 touch_screen_text.getAnimation().start();
             }
@@ -301,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 touch_screen_text.setVisibility(View.VISIBLE);
-                Animation connectingAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.alpha_scale_animation);
+                Animation connectingAnimation = AnimationUtils.loadAnimation(AuthorizationActivity.this, R.anim.alpha_scale_animation);
                 touch_screen_text.setAnimation(connectingAnimation);
                 touch_screen_text.getAnimation().start();
             }

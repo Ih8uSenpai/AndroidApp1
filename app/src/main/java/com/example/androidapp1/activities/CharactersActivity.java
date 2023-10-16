@@ -1,12 +1,9 @@
-package com.example.androidapp1;
+package com.example.androidapp1.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,10 +15,12 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.androidapp1.Models.UserData;
+import com.example.androidapp1.utils.LoadModelsTask;
+import com.example.androidapp1.models.UserData;
+import com.example.androidapp1.utils.MyRenderer;
+import com.example.androidapp1.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,15 +28,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.rajawali3d.Object3D;
-import org.rajawali3d.loader.LoaderOBJ;
-import org.rajawali3d.loader.ParsingException;
-import org.rajawali3d.scene.Scene;
 import org.rajawali3d.view.SurfaceView;
 
-import java.util.ArrayList;
-
-public class Characters extends Activity {
+public class CharactersActivity extends Activity {
 
     //database
     FirebaseAuth auth;
@@ -88,7 +81,7 @@ public class Characters extends Activity {
         // setting 3d model
         surfaceViewKiana.setZOrderOnTop(true);
         surfaceViewKiana.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        renderer_kiana = new MyRenderer(Characters.this, "kiana");
+        renderer_kiana = new MyRenderer(CharactersActivity.this, "kiana");
         // render surface
         surfaceViewKiana.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         surfaceViewKiana.setSurfaceRenderer(renderer_kiana);
@@ -186,7 +179,7 @@ public class Characters extends Activity {
         to_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Characters.this, HomeScreen.class));
+                startActivity(new Intent(CharactersActivity.this, HomeActivity.class));
                 finish();
             }
         });

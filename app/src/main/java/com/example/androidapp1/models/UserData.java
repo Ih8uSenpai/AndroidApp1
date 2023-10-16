@@ -1,8 +1,6 @@
-package com.example.androidapp1.Models;
+package com.example.androidapp1.models;
 
-import android.util.Pair;
-
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.androidapp1.utils.pair;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
