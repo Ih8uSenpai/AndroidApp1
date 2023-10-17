@@ -1,9 +1,9 @@
 // launch activity
 package com.example.androidapp1.activities;
 
-import static com.example.androidapp1.activities.HomeActivity.parseItemsFromFile_artifacts;
-import static com.example.androidapp1.activities.HomeActivity.parseItemsFromFile_cones;
-import static com.example.androidapp1.activities.HomeActivity.parseItemsFromFile_items;
+
+import static com.example.androidapp1.activities.HomeActivity.getDrawableCone;
+import static com.example.androidapp1.utils.Constants.cone_exp_table;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +27,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.example.androidapp1.db_manage.ConeFirebaseManager;
+import com.example.androidapp1.db_manage.UsersDataFirebaseManager;
+import com.example.androidapp1.db_manage.UsersFirebaseManager;
 import com.example.androidapp1.models.Character;
+import com.example.androidapp1.models.Cone;
+import com.example.androidapp1.models.ConeUserdata;
 import com.example.androidapp1.models.InventoryItem;
 import com.example.androidapp1.models.User;
 import com.example.androidapp1.models.UserData;
@@ -46,13 +51,13 @@ import java.util.List;
 
 public class AuthorizationActivity extends AppCompatActivity {
 
-    private static final int CONES_SIZE = 3;
-    private static final int ARTIFACTS_SIZE = 5;
-    private static final int ITEMS_SIZE = 2;
     TextView touch_screen_text;
     FirebaseAuth auth;
     FirebaseDatabase db;
     DatabaseReference users, usersData;
+    ConeFirebaseManager coneFirebaseManager;
+    UsersDataFirebaseManager usersDataFirebaseManager;
+    UsersFirebaseManager usersFirebaseManager;
 
     ConstraintLayout root;
 
@@ -61,7 +66,7 @@ public class AuthorizationActivity extends AppCompatActivity {
     MediaPlayer ost1;
 
     ArrayList<Character> characters = new ArrayList<>();
-    private List<InventoryItem> items_cone;
+    private List<ConeUserdata> items_cone;
     private List<InventoryItem> items_artifact;
     private List<InventoryItem> items_item;
 
@@ -133,10 +138,16 @@ public class AuthorizationActivity extends AppCompatActivity {
         characters.add(new Character("Blade", 1, 0, 0, 0, 0, 0, "ability_blade", "passive_blade", "talent_blade", false));
 
         // add inventory items
-        items_cone = parseItemsFromFile_cones(this, R.raw.cones);
-        items_artifact = parseItemsFromFile_artifacts(this, R.raw.artifacts);
-        items_item = parseItemsFromFile_items(this, R.raw.items);
+        coneFirebaseManager = new ConeFirebaseManager();
+        items_cone = coneFirebaseManager.fetchConesAndInitializeUserData();
+        items_cone.add(new ConeUserdata("name1", 0, 1, false));
+        //items_artifact = parseItemsFromFile_artifacts(this, R.raw.artifacts);
+        //items_item = parseItemsFromFile_items(this, R.raw.items);
 
+        usersDataFirebaseManager = new UsersDataFirebaseManager();
+        usersFirebaseManager = new UsersFirebaseManager();
+        //usersFirebaseManager.clearUsersData();
+        //usersDataFirebaseManager.clearUsersData();
     }
 
     private void set_animations(){
@@ -261,8 +272,8 @@ public class AuthorizationActivity extends AppCompatActivity {
                                 userData.setCharacters(characters);
                                 //if (userData.getCones().size() != 16)
                                 userData.setCones(items_cone);
-                                userData.setArtifacts(items_artifact);
-                                userData.setItems(items_item);
+                                //userData.setArtifacts(items_artifact);
+                                //userData.setItems(items_item);
                                 //добавление данных пользователя в бд
                                 usersData.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .setValue(userData)

@@ -9,12 +9,18 @@ public class InventoryItem {
     private String name;
     private String description;
     private String function;
-    private ArrayList<Integer> stats;
     private int rarity;
 
 
 
     private boolean is_obtained = false;
+    private int amount;
+
+    public InventoryItem(int imageResource, String name, String description) {
+        ImageResource = imageResource;
+        this.name = name;
+        this.description = description;
+    }
 
     public int getRarity() {
         return rarity;
@@ -24,48 +30,9 @@ public class InventoryItem {
         this.rarity = rarity;
     }
 
-    public InventoryItem(int imageResource, String name, String description, int rarity) {
-        ImageResource = imageResource;
-        this.name = name;
-        this.description = description;
-        this.rarity = rarity;
-    }
-
-    public InventoryItem(int imageResource, String name, String description) {
-        ImageResource = imageResource;
-        this.name = name;
-        this.description = description;
-    }
 
 
-    public InventoryItem() {}
 
-    public InventoryItem(int imageResource, String name, String description, String function, ArrayList<Integer> stats) {
-        ImageResource = imageResource;
-        this.name = name;
-        this.description = description;
-        this.function = function;
-        this.stats = stats;
-    }
-
-    public InventoryItem(int imageResource, String name, String description, String function) {
-        ImageResource = imageResource;
-        this.name = name;
-        this.description = description;
-        this.function = function;
-    }
-    public InventoryItem(int imageResource, String name, String description, String function, int rarity) {
-        ImageResource = imageResource;
-        this.name = name;
-        this.description = description;
-        this.function = function;
-        this.rarity = rarity;
-    }
-
-    public InventoryItem(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
 
     public int getImageResource() {
         return ImageResource;
@@ -83,9 +50,6 @@ public class InventoryItem {
         return function;
     }
 
-    public ArrayList<Integer> getStats() {
-        return stats;
-    }
     public boolean getIs_obtained() {
         return is_obtained;
     }
@@ -95,4 +59,35 @@ public class InventoryItem {
         usersData.child("cones").child(id).child("is_obtained").setValue(is_obtained);
     }
 
+    public void setImageResource(int imageResource) {
+        ImageResource = imageResource;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setFunction(String function) {
+        this.function = function;
+    }
+
+    public void setIs_obtained(boolean is_obtained) {
+        this.is_obtained = is_obtained;
+    }
+
+    public boolean isIs_obtained() {
+        return is_obtained;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 }

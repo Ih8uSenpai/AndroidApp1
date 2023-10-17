@@ -36,7 +36,7 @@ public class UserData {
     ArrayList<pair> loot_table;
 
     // inventory items
-    List<InventoryItem> cones = new ArrayList<>();
+    List<ConeUserdata> cones = new ArrayList<>();
     List<InventoryItem> artifacts = new ArrayList<>();
     List<InventoryItem> items = new ArrayList<>();
 
@@ -200,11 +200,11 @@ public class UserData {
     }
 
 
-    public List<InventoryItem> getCones() {
+    public List<ConeUserdata> getCones() {
         return cones;
     }
 
-    public void setCones(List<InventoryItem> cones) {
+    public void setCones(List<ConeUserdata> cones) {
         this.cones = cones;
     }
 

@@ -7,59 +7,61 @@
     tools:context=".activities.HomeActivity">
 
 
-
-
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="100dp" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/inventory_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:elevation="2dp"
         android:background="@color/cardview_dark_background"
-        >
+        android:elevation="2dp"
+        android:visibility="gone">
+
         <TextView
             android:id="@+id/gems_inv"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:background="#66000000"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="50dp"
-            app:layout_constraintRight_toRightOf="parent"
+            android:background="#66000000"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/item_details"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/gold_inv"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:background="#66000000"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="50dp"
+            android:background="#66000000"
+            android:textAlignment="center"
+            android:textColor="@color/white"
             app:layout_constraintRight_toLeftOf="@+id/gems_inv"
             app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            app:srcCompat="@drawable/gold_icon"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="85dp"
             app:layout_constraintRight_toRightOf="@+id/gold_inv"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/gold_icon" />
+
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            app:srcCompat="@drawable/gems_icon"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="80dp"
             app:layout_constraintRight_toRightOf="@+id/gems_inv"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/gems_icon" />
 
         <ImageButton
             android:id="@+id/inventory_to_home"
@@ -74,185 +76,401 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="TouchTargetSizeCheck" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:id="@+id/sections_panel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:background="#33000000">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="120dp"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="70dp">
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/cones_btn"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@null"
-                            android:text="Cones"
-                            android:textAllCaps="false"
-                            android:textColor="@color/white"
-                            android:contentDescription="button"
-                            android:outlineAmbientShadowColor="@color/black"
-                            android:outlineSpotShadowColor="@color/black"
-                            android:src="@drawable/cone_icon1"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent" />
+        <LinearLayout
+            android:id="@+id/sections_panel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#33000000"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="#0073AA"
-                            app:layout_constraintBottom_toBottomOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="70dp">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="120dp"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="10dp">
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/artifacts_btn"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@null"
-                            android:text="Artifacts"
-                            android:textAllCaps="false"
-                            android:textColor="@color/white"
-                            android:contentDescription="button"
-                            android:outlineAmbientShadowColor="@color/black"
-                            android:outlineSpotShadowColor="@color/black"
-                            android:src="@drawable/cone_icon1"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="#0073AA"
-                            app:layout_constraintBottom_toBottomOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="120dp"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="10dp">
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/items_btn"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@null"
-                            android:text="Items"
-                            android:textAllCaps="false"
-                            android:textColor="@color/white"
-                            android:contentDescription="button"
-                            android:outlineAmbientShadowColor="@color/black"
-                            android:outlineSpotShadowColor="@color/black"
-                            android:src="@drawable/cone_icon1"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="#0073AA"
-                            app:layout_constraintBottom_toBottomOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-
-                <GridView
-                    android:id="@+id/inventory_grid_cones"
-                    android:layout_width="560dp"
-                    android:layout_height="wrap_content"
-                    android:columnWidth="50dp"
-                    android:horizontalSpacing="3dp"
-                    android:numColumns="8"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="3dp"
-                    android:layout_marginTop="60dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="#22000000"
-                    android:visibility="visible"/>
-                <GridView
-                    android:id="@+id/inventory_grid_artifacts"
-                    android:layout_width="560dp"
-                    android:layout_height="wrap_content"
-                    android:columnWidth="50dp"
-                    android:horizontalSpacing="3dp"
-                    android:numColumns="8"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="3dp"
-                    android:layout_marginTop="60dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="#22000000"
-                    android:visibility="gone"/>
-                <GridView
-                    android:id="@+id/inventory_grid_items"
-                    android:layout_width="560dp"
-                    android:layout_height="wrap_content"
-                    android:columnWidth="50dp"
-                    android:horizontalSpacing="3dp"
-                    android:numColumns="8"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="3dp"
-                    android:layout_marginTop="60dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="#22000000"
-                    android:visibility="gone"/>
-                <LinearLayout
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/cones_btn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="name"
-                        android:layout_marginTop="50dp"
-                        android:textSize="20sp"
-                        android:textColor="@color/white"
-                        />
+                    android:background="@null"
+                    android:contentDescription="button"
+                    android:outlineAmbientShadowColor="@color/black"
+                    android:outlineSpotShadowColor="@color/black"
+                    android:src="@drawable/cone_icon1"
+                    android:text="Cones"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:layout_margin="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:src="@drawable/banner1"
-                        android:scaleType="centerCrop"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="description"
-                        android:layout_marginTop="10dp"
-                        android:textSize="20sp"
-                        android:textColor="@color/white"
-                        />
-                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#0073AA"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/artifacts_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:contentDescription="button"
+                    android:outlineAmbientShadowColor="@color/black"
+                    android:outlineSpotShadowColor="@color/black"
+                    android:src="@drawable/cone_icon1"
+                    android:text="Artifacts"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#0073AA"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/items_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:contentDescription="button"
+                    android:outlineAmbientShadowColor="@color/black"
+                    android:outlineSpotShadowColor="@color/black"
+                    android:src="@drawable/cone_icon1"
+                    android:text="Items"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#0073AA"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+
+        <GridView
+            android:id="@+id/inventory_grid_cones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginRight="20dp"
+            android:background="#22000000"
+            android:columnWidth="50dp"
+            android:horizontalSpacing="3dp"
+            android:numColumns="8"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="3dp"
+            android:visibility="visible"
+            app:layout_constraintStart_toEndOf="@id/sections_panel"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.64" />
+
+        <GridView
+            android:id="@+id/inventory_grid_artifacts"
+            android:layout_width="560dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginRight="20dp"
+            android:background="#22000000"
+            android:columnWidth="50dp"
+            android:horizontalSpacing="3dp"
+            android:numColumns="8"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="3dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/sections_panel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <GridView
+            android:id="@+id/inventory_grid_items"
+            android:layout_width="560dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginRight="20dp"
+            android:background="#22000000"
+            android:columnWidth="50dp"
+            android:horizontalSpacing="3dp"
+            android:numColumns="8"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="3dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/sections_panel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/item_details"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.17">
 
             <TextView
-                android:id="@+id/inventory_section_name"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:layout_width="wrap_content"
+                android:id="@+id/item_name_details"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:textSize="20sp"
-                android:textColor="@color/white" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginTop="50dp"
+                android:text="name"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/item_name_details_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#D3D3D3" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="5dp">
+
+                <ImageView
+                    android:id="@+id/item_image_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:paddingTop="100dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/cone1" />
+
+                <TextView
+                    android:id="@+id/details_image_bottom_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:background="#88000000"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+                <ImageView
+                    android:id="@+id/star1_details"
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:src="@drawable/star"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/details_image_bottom_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="5dp"
+                    />
+                <ImageView
+                    android:id="@+id/star2_details"
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:src="@drawable/star"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/details_image_bottom_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="15dp"
+                    />
+                <ImageView
+                    android:id="@+id/star3_details"
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:src="@drawable/star"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/details_image_bottom_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="25dp"
+                    />
+                <ImageView
+                    android:id="@+id/star4_details"
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:src="@drawable/star"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/details_image_bottom_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="35dp"
+                    android:visibility="gone"
+                    />
+                <ImageView
+                    android:id="@+id/star5_details"
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:src="@drawable/star"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/details_image_bottom_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="45dp"
+                    android:visibility="gone"
+                    />
+                <ImageView
+                    android:id="@+id/hp_stat_cone_image_details"
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:src="@drawable/hp_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/details_image_bottom_line"
+                    app:layout_constraintEnd_toStartOf="@id/hp_stat_cone_text_details"
+                    android:layout_marginEnd="2dp"
+                    />
+                <TextView
+                    android:id="@+id/hp_stat_cone_text_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="9dp"
+                    android:src="@drawable/star"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/details_image_bottom_line"
+                    app:layout_constraintEnd_toStartOf="@id/atk_stat_cone_image_details"
+                    android:layout_marginEnd="3dp"
+                    android:textSize="6sp"
+                    android:text="@string/error"
+                    android:textColor="#88FFFFFF"
+                    />
+                <ImageView
+                    android:id="@+id/atk_stat_cone_image_details"
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:src="@drawable/atk_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/details_image_bottom_line"
+                    app:layout_constraintEnd_toStartOf="@id/atk_stat_cone_text_details"
+                    android:layout_marginEnd="2dp"
+                    />
+                <TextView
+                    android:id="@+id/atk_stat_cone_text_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="9dp"
+                    android:src="@drawable/star"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/details_image_bottom_line"
+                    app:layout_constraintEnd_toStartOf="@id/def_stat_cone_image_details"
+                    android:layout_marginEnd="3dp"
+                    android:textSize="6sp"
+                    android:text="@string/error"
+                    android:textColor="#88FFFFFF"
+                    />
+                <ImageView
+                    android:id="@+id/def_stat_cone_image_details"
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:src="@drawable/def_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/details_image_bottom_line"
+                    app:layout_constraintEnd_toStartOf="@id/def_stat_cone_text_details"
+                    android:layout_marginEnd="2dp"
+                    />
+                <TextView
+                    android:id="@+id/def_stat_cone_text_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="9dp"
+                    android:src="@drawable/star"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/details_image_bottom_line"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="3dp"
+                    android:textSize="6sp"
+                    android:text="@string/error"
+                    android:textColor="#88FFFFFF"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cone_lvl_layout_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lv"
+                    android:textSize="10dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+                <TextView
+                    android:id="@+id/cone_lvl_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error"
+                    android:textSize="10sp"
+                    android:textColor="@color/white"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="15dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/item_ability_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="item_ability"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:padding="2dp"
+                android:layout_marginTop="5dp"
+                android:background="#D3D3D3" />
+            <TextView
+                android:id="@+id/item_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="description"
+                android:textColor="#D3D3D3"
+                android:textSize="8sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/level_up_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textSize="10sp"
+                    android:text="Level Up"
+                    android:textAllCaps="false"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:background="@color/light_yellow"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/inventory_section_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -261,56 +479,47 @@
         android:id="@+id/rating_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:background="@color/blue"
-        >
+        android:visibility="gone">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/rating_to_home"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:text="BACK"
-            />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/home_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/home_screen"
         android:visibility="visible">
-
-
 
 
         <VideoView
             android:id="@+id/home_screen_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <TextView
             android:id="@+id/bottom_buttons_panel"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="#55FFFFFF"
-            app:layout_constraintWidth_percent="0.75"
+            app:layout_constraintBottom_toTopOf="@id/guideline_for_bottom_panel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.15"
-            app:layout_constraintBottom_toTopOf="@id/guideline_for_bottom_panel"
-            />
+            app:layout_constraintWidth_percent="0.75" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_for_bottom_panel"
@@ -318,35 +527,37 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.92" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical_guideline_for_bottom_panel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.12" />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/profile_bar"
             android:layout_width="250dp"
             android:layout_height="70dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:alpha="0.6"
+            android:elevation="0dp"
+            app:cardElevation="0dp"
             app:cardForegroundColor="#553344FF"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearance="@style/My_style1"
-            app:cardElevation="0dp"
-            android:elevation="0dp"
-            android:alpha="0.6">
+            app:shapeAppearance="@style/My_style1">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
+                android:alpha="0.8"
+                android:elevation="0dp"
+                app:cardElevation="0dp"
                 app:cardForegroundColor="#44000000"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:cardElevation="0dp"
-                android:elevation="0dp"
-                android:alpha="0.8"/>
+                app:layout_constraintTop_toTopOf="parent" />
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
@@ -394,8 +605,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="NICKNAME"
-                android:textColor="@color/white"
                 android:textAllCaps="false"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <ProgressBar
@@ -408,183 +619,194 @@
                 android:progress="0"
                 android:progressDrawable="@drawable/progress_bar_style" />
         </LinearLayout>
+
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/parallelogram_shape"
+            android:clipToOutline="true"
             android:padding="20dp"
-            app:layout_constraintWidth_percent="0.195"
             app:layout_constraintHeight_percent="0.05"
             app:layout_constraintStart_toStartOf="@+id/vertical_guideline_for_friends"
             app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_gold"
-            android:clipToOutline="true"/>
+            app:layout_constraintWidth_percent="0.195" />
+
         <ImageButton
             android:id="@+id/friends_icon1"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/button_with_slash"
-            android:src="@drawable/friends_icon"
+            android:clipToOutline="true"
             android:padding="10dp"
-            app:layout_constraintWidth_percent="0.076"
+            android:src="@drawable/friends_icon"
             app:layout_constraintHeight_percent="0.05"
             app:layout_constraintStart_toStartOf="@+id/vertical_guideline_for_friends"
             app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_gold"
-            android:clipToOutline="true"/>
+            app:layout_constraintWidth_percent="0.076" />
+
         <ImageButton
             android:id="@+id/mail_icon"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/button_with_slash"
-            android:src="@drawable/mail_icon"
+            android:clipToOutline="true"
             android:padding="10dp"
-            app:layout_constraintWidth_percent="0.076"
+            android:src="@drawable/mail_icon"
             app:layout_constraintHeight_percent="0.05"
             app:layout_constraintStart_toStartOf="@+id/vertical_guideline_for_mail"
             app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_gold"
-            android:clipToOutline="true"/>
+            app:layout_constraintWidth_percent="0.076" />
+
         <ImageButton
             android:id="@+id/news_button"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/button_with_slash"
-            android:src="@drawable/news_icon1"
+            android:clipToOutline="true"
             android:padding="10dp"
-            app:layout_constraintWidth_percent="0.076"
+            android:src="@drawable/news_icon1"
             app:layout_constraintHeight_percent="0.05"
             app:layout_constraintStart_toStartOf="@+id/vertical_guideline_for_news"
             app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_gold"
-            android:clipToOutline="true"/>
-
+            app:layout_constraintWidth_percent="0.076" />
 
 
         <ImageButton
-            android:visibility="gone"
             android:id="@+id/side_menu_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/side_menu"
+            android:layout_marginStart="10dp"
+            android:alpha="0.85"
+            android:background="#00000000"
             android:padding="0dp"
             android:scaleType="fitXY"
-            android:background="#00000000"
-            android:alpha="0.85"
-            android:layout_marginStart="10dp"
+            android:src="@drawable/side_menu"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_events" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:alpha="0.85"
+            android:background="@drawable/circle_shape1"
             android:padding="0dp"
             android:scaleType="fitCenter"
-            android:background="@drawable/circle_shape1"
-            android:alpha="0.85"
-            app:layout_constraintStart_toStartOf="@id/events_button_image"
+            app:layout_constraintBottom_toBottomOf="@id/events_button_image"
             app:layout_constraintEnd_toEndOf="@id/events_button_image"
-            app:layout_constraintTop_toTopOf="@+id/events_button_image"
-            app:layout_constraintBottom_toBottomOf="@id/events_button_image"/>
+            app:layout_constraintStart_toStartOf="@id/events_button_image"
+            app:layout_constraintTop_toTopOf="@+id/events_button_image" />
+
         <ImageButton
             android:id="@+id/events_button_image"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/events_icon2"
+            android:alpha="0.85"
+            android:background="@drawable/circle_shape"
             android:padding="0dp"
             android:scaleType="fitCenter"
-            android:background="@drawable/circle_shape"
-            android:alpha="0.85"
+            android:src="@drawable/events_icon2"
             app:layout_constraintStart_toStartOf="@+id/vertical_guideline_for_events"
             app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_events" />
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:alpha="0.85"
+            android:background="@drawable/circle_shape1"
             android:padding="0dp"
             android:scaleType="fitCenter"
-            android:background="@drawable/circle_shape1"
-            android:alpha="0.85"
-            app:layout_constraintStart_toStartOf="@id/music_button_image"
+            app:layout_constraintBottom_toBottomOf="@id/music_button_image"
             app:layout_constraintEnd_toEndOf="@id/music_button_image"
-            app:layout_constraintTop_toTopOf="@+id/music_button_image"
-            app:layout_constraintBottom_toBottomOf="@id/music_button_image"/>
+            app:layout_constraintStart_toStartOf="@id/music_button_image"
+            app:layout_constraintTop_toTopOf="@+id/music_button_image" />
+
         <ImageButton
             android:id="@+id/music_button_image"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/music_icon2"
+            android:alpha="0.85"
+            android:background="@drawable/circle_shape"
             android:padding="0dp"
             android:scaleType="fitCenter"
-            android:background="@drawable/circle_shape"
-            android:alpha="0.85"
+            android:src="@drawable/music_icon2"
             app:layout_constraintStart_toStartOf="@+id/vertical_guideline_for_music"
             app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_music" />
+
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:alpha="0.85"
+            android:background="@drawable/circle_shape1"
             android:padding="0dp"
             android:scaleType="fitCenter"
-            android:background="@drawable/circle_shape1"
-            android:alpha="0.85"
-            app:layout_constraintStart_toStartOf="@id/settings_button_image"
+            app:layout_constraintBottom_toBottomOf="@id/settings_button_image"
             app:layout_constraintEnd_toEndOf="@id/settings_button_image"
-            app:layout_constraintTop_toTopOf="@+id/settings_button_image"
-            app:layout_constraintBottom_toBottomOf="@id/settings_button_image"/>
+            app:layout_constraintStart_toStartOf="@id/settings_button_image"
+            app:layout_constraintTop_toTopOf="@+id/settings_button_image" />
+
         <ImageButton
             android:id="@+id/settings_button_image"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/settings_icon3"
+            android:alpha="0.85"
+            android:background="@drawable/circle_shape"
             android:padding="0dp"
             android:scaleType="fitCenter"
-            android:background="@drawable/circle_shape"
-            android:alpha="0.85"
+            android:src="@drawable/settings_icon3"
             app:layout_constraintStart_toStartOf="@+id/vertical_guideline_for_settings"
             app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_settings" />
+
         <ImageButton
             android:id="@+id/settings_button"
             android:layout_width="31dp"
             android:layout_height="31dp"
+            android:alpha="0.0"
+            android:background="@drawable/circle_shape1"
             android:padding="0dp"
             android:scaleType="fitCenter"
-            android:background="@drawable/circle_shape1"
-            android:alpha="0.0"
-            app:layout_constraintStart_toStartOf="@id/settings_button_image"
+            app:layout_constraintBottom_toBottomOf="@id/settings_button_image"
             app:layout_constraintEnd_toEndOf="@id/settings_button_image"
-            app:layout_constraintTop_toTopOf="@+id/settings_button_image"
-            app:layout_constraintBottom_toBottomOf="@id/settings_button_image"/>
+            app:layout_constraintStart_toStartOf="@id/settings_button_image"
+            app:layout_constraintTop_toTopOf="@+id/settings_button_image" />
+
         <ImageButton
             android:id="@+id/music_button"
             android:layout_width="31dp"
             android:layout_height="301dp"
+            android:alpha="0.0"
+            android:background="@drawable/circle_shape1"
             android:padding="0dp"
             android:scaleType="fitCenter"
-            android:background="@drawable/circle_shape1"
-            android:alpha="0.0"
-            app:layout_constraintStart_toStartOf="@id/music_button_image"
+            app:layout_constraintBottom_toBottomOf="@id/music_button_image"
             app:layout_constraintEnd_toEndOf="@id/music_button_image"
-            app:layout_constraintTop_toTopOf="@+id/music_button_image"
-            app:layout_constraintBottom_toBottomOf="@id/music_button_image"/>
+            app:layout_constraintStart_toStartOf="@id/music_button_image"
+            app:layout_constraintTop_toTopOf="@+id/music_button_image" />
+
         <ImageButton
             android:id="@+id/events_button"
             android:layout_width="31dp"
             android:layout_height="31dp"
+            android:alpha="0.0"
+            android:background="@drawable/circle_shape1"
             android:padding="0dp"
             android:scaleType="fitCenter"
-            android:background="@drawable/circle_shape1"
-            android:alpha="0.0"
-            app:layout_constraintStart_toStartOf="@id/events_button_image"
+            app:layout_constraintBottom_toBottomOf="@id/events_button_image"
             app:layout_constraintEnd_toEndOf="@id/events_button_image"
-            app:layout_constraintTop_toTopOf="@+id/events_button_image"
-            app:layout_constraintBottom_toBottomOf="@id/events_button_image"/>
+            app:layout_constraintStart_toStartOf="@id/events_button_image"
+            app:layout_constraintTop_toTopOf="@+id/events_button_image" />
+
         <ImageView
-            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@drawable/text1"
-            android:padding="0dp"
-            app:layout_constraintWidth_percent="0.1"
-            app:layout_constraintHeight_percent="0.1"
             android:layout_marginBottom="16dp"
+            android:padding="0dp"
+            android:src="@drawable/text1"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/events_button"
+            app:layout_constraintHeight_percent="0.1"
             app:layout_constraintLeft_toLeftOf="@+id/events_button"
-            app:layout_constraintBottom_toBottomOf="@id/events_button" />
+            app:layout_constraintWidth_percent="0.1" />
 
 
         <androidx.constraintlayout.widget.Guideline
@@ -593,6 +815,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.5" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical_guideline_for_events"
             android:layout_width="wrap_content"
@@ -606,6 +829,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.19" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical_guideline_for_play_button"
             android:layout_width="wrap_content"
@@ -619,12 +843,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.77" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical_guideline_for_mail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.83" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical_guideline_for_news"
             android:layout_width="wrap_content"
@@ -637,35 +863,33 @@
             android:id="@+id/gems"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintWidth_percent="0.15"
-            app:layout_constraintHeight_percent="0.05"
             android:layout_gravity="center"
+            android:background="@drawable/parallelogram_shape1"
+            android:fontFamily="@font/star_renegades1"
             android:gravity="center"
+            android:paddingStart="10dp"
             android:textColor="@color/white"
             android:textSize="17sp"
-            android:paddingStart="10dp"
-            android:fontFamily="@font/star_renegades1"
-            android:background="@drawable/parallelogram_shape1"
+            app:layout_constraintHeight_percent="0.05"
             app:layout_constraintRight_toRightOf="@+id/vertical_guideline_for_gems"
             app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_gold"
-            />
+            app:layout_constraintWidth_percent="0.15" />
+
         <TextView
             android:id="@+id/gold"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintWidth_percent="0.15"
-            app:layout_constraintHeight_percent="0.05"
             android:layout_gravity="center"
+            android:background="@drawable/parallelogram_shape1"
+            android:fontFamily="@font/star_renegades1"
             android:gravity="center"
+            android:paddingStart="10dp"
             android:textColor="@color/white"
             android:textSize="17sp"
-            android:fontFamily="@font/star_renegades1"
-            android:background="@drawable/parallelogram_shape1"
-            android:paddingStart="10dp"
+            app:layout_constraintHeight_percent="0.05"
             app:layout_constraintRight_toRightOf="@+id/vertical_guideline_for_gold"
             app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_gold"
-            />
-
+            app:layout_constraintWidth_percent="0.15" />
 
 
         <androidx.constraintlayout.widget.Guideline
@@ -681,12 +905,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.73" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/horizontal_guideline_for_gold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.03" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/horizontal_guideline_for_music"
             android:layout_width="wrap_content"
@@ -700,6 +926,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.05" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/horizontal_guideline_for_settings"
             android:layout_width="wrap_content"
@@ -713,30 +940,31 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.02" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/events_window"
             android:layout_width="300dp"
             android:layout_height="200dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:visibility="gone">
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:background="#88222C37"
                 android:gravity="center"
-                android:visibility="visible"
-                >
+                android:orientation="vertical"
+                android:visibility="visible">
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/gain_exp"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="get exp"
                     android:backgroundTint="#6770F1"
+                    android:text="get exp"
                     android:textColor="@color/white"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -745,18 +973,19 @@
                     android:id="@+id/gain_gold"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="#6770F1"
                     android:text="get gold"
-                    android:textColor="@color/white"
-                    android:backgroundTint="#6770F1"/>
+                    android:textColor="@color/white" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/gain_gems"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="#6770F1"
                     android:text="get gems"
-                    android:textColor="@color/white"
-                    android:backgroundTint="#6770F1"/>
+                    android:textColor="@color/white" />
             </LinearLayout>
+
             <ImageButton
                 android:id="@+id/eventsToHome"
                 android:layout_width="wrap_content"
@@ -766,288 +995,287 @@
                 android:contentDescription="close"
                 android:elevation="15dp"
                 android:src="@drawable/close_button"
-                tools:ignore="TouchTargetSizeCheck"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TouchTargetSizeCheck" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintWidth_percent="0.04"
+            app:layout_constraintBottom_toBottomOf="@+id/gold"
             app:layout_constraintHeight_percent="0.06"
-            app:srcCompat="@drawable/gold_icon"
             app:layout_constraintLeft_toLeftOf="@+id/gold"
             app:layout_constraintTop_toTopOf="@+id/gold"
-            app:layout_constraintBottom_toBottomOf="@+id/gold" />
+            app:layout_constraintWidth_percent="0.04"
+            app:srcCompat="@drawable/gold_icon" />
+
         <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintWidth_percent="0.04"
-            app:layout_constraintHeight_percent="0.06"
-            app:srcCompat="@drawable/gems_icon"
             android:layout_marginEnd="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/gems"
+            app:layout_constraintHeight_percent="0.06"
             app:layout_constraintLeft_toLeftOf="@+id/gems"
             app:layout_constraintTop_toTopOf="@+id/gems"
-            app:layout_constraintBottom_toBottomOf="@+id/gems"/>
-
-
-
+            app:layout_constraintWidth_percent="0.04"
+            app:srcCompat="@drawable/gems_icon" />
 
 
         <ImageButton
             android:id="@+id/characters_button_wrap_wrap"
             android:layout_width="73dp"
             android:layout_height="73dp"
-            android:outlineSpotShadowColor="@color/black"
-            android:outlineAmbientShadowColor="@color/black"
+            android:alpha="0.5"
             android:background="@drawable/circle_shape1"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/characters_button"
             app:layout_constraintLeft_toLeftOf="@+id/characters_button"
             app:layout_constraintRight_toRightOf="@id/characters_button"
-            app:layout_constraintBottom_toBottomOf="@+id/characters_button"
-            app:layout_constraintTop_toTopOf="@id/characters_button"
-            android:alpha="0.5"
-            />
+            app:layout_constraintTop_toTopOf="@id/characters_button" />
+
         <ImageButton
             android:id="@+id/invetory_button_wrap_wrap"
             android:layout_width="73dp"
             android:layout_height="73dp"
-            android:outlineSpotShadowColor="@color/black"
-            android:outlineAmbientShadowColor="@color/black"
+            android:alpha="0.5"
             android:background="@drawable/circle_shape1"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/inventory_button"
             app:layout_constraintLeft_toLeftOf="@+id/inventory_button"
             app:layout_constraintRight_toRightOf="@id/inventory_button"
-            app:layout_constraintBottom_toBottomOf="@+id/inventory_button"
-            app:layout_constraintTop_toTopOf="@id/inventory_button"
-            android:alpha="0.5"
-            />
+            app:layout_constraintTop_toTopOf="@id/inventory_button" />
+
         <ImageButton
             android:id="@+id/rating_button_wrap_wrap"
             android:layout_width="73dp"
             android:layout_height="73dp"
-            android:outlineSpotShadowColor="@color/black"
-            android:outlineAmbientShadowColor="@color/black"
+            android:alpha="0.5"
             android:background="@drawable/circle_shape1"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/rating_button"
             app:layout_constraintLeft_toLeftOf="@+id/rating_button"
             app:layout_constraintRight_toRightOf="@id/rating_button"
-            app:layout_constraintBottom_toBottomOf="@+id/rating_button"
-            app:layout_constraintTop_toTopOf="@id/rating_button"
-            android:alpha="0.5"
-            />
+            app:layout_constraintTop_toTopOf="@id/rating_button" />
+
         <ImageButton
             android:id="@+id/memories_button_wrap_wrap"
             android:layout_width="73dp"
             android:layout_height="73dp"
-            android:outlineSpotShadowColor="@color/black"
-            android:outlineAmbientShadowColor="@color/black"
+            android:alpha="0.5"
             android:background="@drawable/circle_shape1"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/memories"
             app:layout_constraintLeft_toLeftOf="@+id/memories"
             app:layout_constraintRight_toRightOf="@id/memories"
-            app:layout_constraintBottom_toBottomOf="@+id/memories"
-            app:layout_constraintTop_toTopOf="@id/memories"
-            android:alpha="0.5"
-            />
+            app:layout_constraintTop_toTopOf="@id/memories" />
+
         <ImageButton
             android:id="@+id/guild_button_wrap_wrap"
             android:layout_width="73dp"
             android:layout_height="73dp"
-            android:outlineSpotShadowColor="@color/black"
-            android:outlineAmbientShadowColor="@color/black"
+            android:alpha="0.5"
             android:background="@drawable/circle_shape1"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/guild_button"
             app:layout_constraintLeft_toLeftOf="@+id/guild_button"
             app:layout_constraintRight_toRightOf="@id/guild_button"
-            app:layout_constraintBottom_toBottomOf="@+id/guild_button"
-            app:layout_constraintTop_toTopOf="@id/guild_button"
-            android:alpha="0.5"
-            />
+            app:layout_constraintTop_toTopOf="@id/guild_button" />
+
         <ImageButton
             android:id="@+id/characters_button_wrap"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:scaleType="fitCenter"
-            android:outlineSpotShadowColor="@color/black"
-            android:outlineAmbientShadowColor="@color/black"
+            android:alpha="0.5"
             android:background="@drawable/circle_shape"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
+            android:scaleType="fitCenter"
+            android:src="@drawable/buttons_wrap2"
+            app:layout_constraintBottom_toBottomOf="@+id/characters_button"
             app:layout_constraintLeft_toLeftOf="@+id/characters_button"
             app:layout_constraintRight_toRightOf="@id/characters_button"
-            app:layout_constraintBottom_toBottomOf="@+id/characters_button"
-            app:layout_constraintTop_toTopOf="@id/characters_button"
-            android:src="@drawable/buttons_wrap2"
-            android:alpha="0.5"
-            />
+            app:layout_constraintTop_toTopOf="@id/characters_button" />
+
         <ImageButton
             android:id="@+id/inventory_button_wrap"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:outlineSpotShadowColor="@color/black"
-            android:outlineAmbientShadowColor="@color/black"
+            android:alpha="0.5"
             android:background="@drawable/circle_shape"
             android:contentDescription="gacha_button"
-            app:layout_constraintLeft_toLeftOf="@+id/inventory_button"
-            app:layout_constraintRight_toRightOf="@id/inventory_button"
-            app:layout_constraintBottom_toBottomOf="@+id/inventory_button"
-            app:layout_constraintTop_toTopOf="@id/inventory_button"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
             android:scaleType="fitCenter"
             android:src="@drawable/buttons_wrap2"
-            android:alpha="0.5"
-            />
+            app:layout_constraintBottom_toBottomOf="@+id/inventory_button"
+            app:layout_constraintLeft_toLeftOf="@+id/inventory_button"
+            app:layout_constraintRight_toRightOf="@id/inventory_button"
+            app:layout_constraintTop_toTopOf="@id/inventory_button" />
+
         <ImageButton
             android:id="@+id/rating_button_wrap"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:outlineSpotShadowColor="@color/black"
-            android:outlineAmbientShadowColor="@color/black"
+            android:alpha="0.5"
             android:background="@drawable/circle_shape"
-            app:layout_constraintLeft_toLeftOf="@+id/rating_button"
-            app:layout_constraintRight_toRightOf="@id/rating_button"
-            app:layout_constraintBottom_toBottomOf="@+id/rating_button"
-            app:layout_constraintTop_toTopOf="@id/rating_button"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
             android:scaleType="fitCenter"
             android:src="@drawable/buttons_wrap2"
-            android:alpha="0.5"
-            />
+            app:layout_constraintBottom_toBottomOf="@+id/rating_button"
+            app:layout_constraintLeft_toLeftOf="@+id/rating_button"
+            app:layout_constraintRight_toRightOf="@id/rating_button"
+            app:layout_constraintTop_toTopOf="@id/rating_button" />
+
         <ImageButton
             android:id="@+id/memories_button_wrap"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:outlineSpotShadowColor="@color/black"
-            android:outlineAmbientShadowColor="@color/black"
+            android:alpha="0.5"
             android:background="@drawable/circle_shape"
-            app:layout_constraintLeft_toLeftOf="@+id/memories"
-            app:layout_constraintRight_toRightOf="@id/memories"
-            app:layout_constraintBottom_toBottomOf="@+id/memories"
-            app:layout_constraintTop_toTopOf="@id/memories"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
             android:scaleType="fitCenter"
             android:src="@drawable/buttons_wrap2"
-            android:alpha="0.5"
-            />
+            app:layout_constraintBottom_toBottomOf="@+id/memories"
+            app:layout_constraintLeft_toLeftOf="@+id/memories"
+            app:layout_constraintRight_toRightOf="@id/memories"
+            app:layout_constraintTop_toTopOf="@id/memories" />
+
         <ImageButton
             android:id="@+id/guild_button_wrap"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:outlineSpotShadowColor="@color/black"
-            android:outlineAmbientShadowColor="@color/black"
+            android:alpha="0.5"
             android:background="@drawable/circle_shape"
             android:contentDescription="gacha_button"
-            app:layout_constraintLeft_toLeftOf="@+id/guild_button"
-            app:layout_constraintRight_toRightOf="@id/guild_button"
-            app:layout_constraintBottom_toBottomOf="@+id/guild_button"
-            app:layout_constraintTop_toTopOf="@id/guild_button"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
             android:scaleType="fitCenter"
             android:src="@drawable/buttons_wrap2"
-            android:alpha="0.5"
-            />
+            app:layout_constraintBottom_toBottomOf="@+id/guild_button"
+            app:layout_constraintLeft_toLeftOf="@+id/guild_button"
+            app:layout_constraintRight_toRightOf="@id/guild_button"
+            app:layout_constraintTop_toTopOf="@id/guild_button" />
+
         <ImageButton
             android:id="@+id/characters_button"
             android:layout_width="50dp"
             android:layout_height="60dp"
-            android:outlineSpotShadowColor="@color/black"
-            android:outlineAmbientShadowColor="@color/black"
-            android:background="@drawable/button_selector"
-            android:src="@drawable/char_icon"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="22dp"
-            app:layout_constraintLeft_toLeftOf="@+id/bottom_buttons_panel"
-            app:layout_constraintBottom_toBottomOf="@+id/bottom_buttons_panel"
+            android:background="@drawable/button_selector"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
             android:scaleType="fitCenter"
-            />
+            android:src="@drawable/char_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/bottom_buttons_panel"
+            app:layout_constraintLeft_toLeftOf="@+id/bottom_buttons_panel" />
 
 
         <ImageButton
             android:id="@+id/inventory_button"
             android:layout_width="50dp"
             android:layout_height="60dp"
+            android:layout_marginStart="160dp"
+            android:layout_marginBottom="22dp"
             android:background="@drawable/button_selector"
             android:outlineAmbientShadowColor="@color/black"
             android:outlineSpotShadowColor="@color/black"
             android:src="@drawable/inventory_bag2"
-            android:layout_marginBottom="22dp"
-            app:layout_constraintLeft_toLeftOf="@+id/bottom_buttons_panel"
             app:layout_constraintBottom_toBottomOf="@+id/bottom_buttons_panel"
-            android:layout_marginStart="160dp" />
+            app:layout_constraintLeft_toLeftOf="@+id/bottom_buttons_panel" />
 
         <ImageButton
             android:id="@+id/rating_button"
             android:layout_width="50dp"
             android:layout_height="60dp"
+            android:layout_marginStart="300dp"
+            android:layout_marginBottom="22dp"
             android:background="@drawable/button_selector"
             android:outlineAmbientShadowColor="@color/black"
             android:outlineSpotShadowColor="@color/black"
             android:src="@drawable/rating3"
-            android:layout_marginBottom="22dp"
-            app:layout_constraintLeft_toLeftOf="@+id/bottom_buttons_panel"
             app:layout_constraintBottom_toBottomOf="@+id/bottom_buttons_panel"
-            android:layout_marginStart="300dp" />
+            app:layout_constraintLeft_toLeftOf="@+id/bottom_buttons_panel" />
+
         <ImageButton
             android:id="@+id/memories"
             android:layout_width="50dp"
             android:layout_height="60dp"
-            android:outlineSpotShadowColor="@color/black"
-            android:outlineAmbientShadowColor="@color/black"
-            android:background="@drawable/button_selector"
-            android:src="@drawable/gacha_icon1"
-            android:layout_marginBottom="22dp"
-            app:layout_constraintLeft_toLeftOf="@+id/bottom_buttons_panel"
-            app:layout_constraintBottom_toBottomOf="@+id/bottom_buttons_panel"
             android:layout_marginStart="440dp"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/button_selector"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/black"
             android:scaleType="fitCenter"
-            />
+            android:src="@drawable/gacha_icon1"
+            app:layout_constraintBottom_toBottomOf="@+id/bottom_buttons_panel"
+            app:layout_constraintLeft_toLeftOf="@+id/bottom_buttons_panel" />
+
         <ImageButton
             android:id="@+id/guild_button"
             android:layout_width="50dp"
             android:layout_height="60dp"
+            android:layout_marginStart="580dp"
+            android:layout_marginBottom="22dp"
             android:background="@drawable/button_selector"
             android:outlineAmbientShadowColor="@color/black"
             android:outlineSpotShadowColor="@color/black"
             android:src="@drawable/guild_but4"
-            android:layout_marginBottom="22dp"
-            app:layout_constraintLeft_toLeftOf="@+id/bottom_buttons_panel"
             app:layout_constraintBottom_toBottomOf="@+id/bottom_buttons_panel"
-            android:layout_marginStart="580dp" />
+            app:layout_constraintLeft_toLeftOf="@+id/bottom_buttons_panel" />
 
         <ImageButton
             android:id="@+id/play_button_wrap_wrap_wrap"
             android:layout_width="90dp"
             android:layout_height="90dp"
+            android:alpha="0.5"
             android:background="@drawable/circle_shape1"
+            android:backgroundTint="#6770F1"
             android:outlineAmbientShadowColor="@color/black"
             android:outlineSpotShadowColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@id/play_button"
-            app:layout_constraintTop_toTopOf="@id/play_button"
-            app:layout_constraintRight_toRightOf="@id/play_button"
-            app:layout_constraintLeft_toLeftOf="@id/play_button"
             android:scaleType="fitCenter"
-            android:alpha="0.5"
-            android:backgroundTint="#6770F1"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/play_button"
+            app:layout_constraintLeft_toLeftOf="@id/play_button"
+            app:layout_constraintRight_toRightOf="@id/play_button"
+            app:layout_constraintTop_toTopOf="@id/play_button" />
+
         <ImageButton
             android:id="@+id/play_button_wrap_wrap"
             android:layout_width="94dp"
             android:layout_height="94dp"
+            android:alpha="0.7"
             android:background="@drawable/circle_shape1"
             android:outlineAmbientShadowColor="@color/black"
             android:outlineSpotShadowColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@id/play_button"
-            app:layout_constraintTop_toTopOf="@id/play_button"
-            app:layout_constraintRight_toRightOf="@id/play_button"
-            app:layout_constraintLeft_toLeftOf="@id/play_button"
             android:scaleType="fitCenter"
-            android:alpha="0.7"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/play_button"
+            app:layout_constraintLeft_toLeftOf="@id/play_button"
+            app:layout_constraintRight_toRightOf="@id/play_button"
+            app:layout_constraintTop_toTopOf="@id/play_button" />
+
         <ImageButton
             android:id="@+id/play_button_wrap"
             android:layout_width="110dp"
             android:layout_height="110dp"
+            android:alpha="0.4"
             android:background="@drawable/circle_shape"
             android:outlineAmbientShadowColor="@color/black"
             android:outlineSpotShadowColor="@color/black"
+            android:scaleType="fitCenter"
             android:src="@drawable/buttons_wrap1"
             app:layout_constraintBottom_toBottomOf="@id/play_button"
-            app:layout_constraintTop_toTopOf="@id/play_button"
-            app:layout_constraintRight_toRightOf="@id/play_button"
             app:layout_constraintLeft_toLeftOf="@id/play_button"
-            android:scaleType="fitCenter"
-            android:alpha="0.4"
-            />
+            app:layout_constraintRight_toRightOf="@id/play_button"
+            app:layout_constraintTop_toTopOf="@id/play_button" />
+
         <ImageButton
             android:id="@+id/play_button"
             android:layout_width="90dp"
@@ -1055,100 +1283,100 @@
             android:background="@drawable/circle_shape"
             android:outlineAmbientShadowColor="@color/black"
             android:outlineSpotShadowColor="@color/black"
-            app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_play_button"
+            android:scaleType="fitCenter"
             app:layout_constraintLeft_toLeftOf="@id/vertical_guideline_for_play_button"
             app:layout_constraintRight_toRightOf="@id/vertical_guideline_for_play_button"
-            android:scaleType="fitCenter"
-            />
+            app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_play_button" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FIGHT"
-            android:textColor="@color/white"
             android:fontFamily="@font/star_renegades2"
-            android:textSize="24sp"
             android:gravity="center"
+            android:text="FIGHT"
             android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="@id/play_button"
-            app:layout_constraintTop_toTopOf="@id/play_button"
-            app:layout_constraintRight_toRightOf="@id/play_button"
             app:layout_constraintLeft_toLeftOf="@id/play_button"
-            />
-
+            app:layout_constraintRight_toRightOf="@id/play_button"
+            app:layout_constraintTop_toTopOf="@id/play_button" />
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:fontFamily="@font/cybertooth0007"
+            android:shadowColor="@color/blue"
+            android:shadowRadius="10"
             android:text="gacha!"
-            android:fontFamily="@font/cybertooth0007"
             android:textColor="@color/white"
             android:textColorHighlight="@color/black"
-            android:shadowColor="@color/blue"
-            android:shadowRadius="10"
             android:textSize="12sp"
-            android:layout_marginTop="65dp"
-            app:layout_constraintTop_toTopOf="@+id/memories"
+            app:layout_constraintLeft_toLeftOf="@+id/memories"
             app:layout_constraintRight_toRightOf="@+id/memories"
-            app:layout_constraintLeft_toLeftOf="@+id/memories"/>
+            app:layout_constraintTop_toTopOf="@+id/memories" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:fontFamily="@font/cybertooth0007"
+            android:shadowColor="@color/blue"
+            android:shadowRadius="10"
             android:text="characters"
-            android:fontFamily="@font/cybertooth0007"
             android:textColor="@color/white"
             android:textColorHighlight="@color/black"
-            android:shadowColor="@color/blue"
-            android:shadowRadius="10"
             android:textSize="12sp"
-            android:layout_marginTop="65dp"
-            app:layout_constraintTop_toTopOf="@+id/characters_button"
+            app:layout_constraintLeft_toLeftOf="@+id/characters_button"
             app:layout_constraintRight_toRightOf="@+id/characters_button"
-            app:layout_constraintLeft_toLeftOf="@+id/characters_button"/>
+            app:layout_constraintTop_toTopOf="@+id/characters_button" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:fontFamily="@font/cybertooth0007"
+            android:shadowColor="@color/blue"
+            android:shadowRadius="10"
             android:text="guild"
-            android:fontFamily="@font/cybertooth0007"
             android:textColor="@color/white"
             android:textColorHighlight="@color/black"
-            android:shadowColor="@color/blue"
-            android:shadowRadius="10"
             android:textSize="12sp"
-            android:layout_marginTop="65dp"
-            app:layout_constraintTop_toTopOf="@id/guild_button"
+            app:layout_constraintLeft_toLeftOf="@id/guild_button"
             app:layout_constraintRight_toRightOf="@id/guild_button"
-            app:layout_constraintLeft_toLeftOf="@id/guild_button"/>
+            app:layout_constraintTop_toTopOf="@id/guild_button" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:fontFamily="@font/cybertooth0007"
+            android:shadowColor="@color/blue"
+            android:shadowRadius="10"
             android:text="inventory"
-            android:fontFamily="@font/cybertooth0007"
             android:textColor="@color/white"
             android:textColorHighlight="@color/black"
-            android:shadowColor="@color/blue"
-            android:shadowRadius="10"
             android:textSize="12sp"
-            android:layout_marginTop="65dp"
-            app:layout_constraintTop_toTopOf="@+id/inventory_button"
+            app:layout_constraintLeft_toLeftOf="@+id/inventory_button"
             app:layout_constraintRight_toRightOf="@+id/inventory_button"
-            app:layout_constraintLeft_toLeftOf="@+id/inventory_button"/>
+            app:layout_constraintTop_toTopOf="@+id/inventory_button" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="rating"
+            android:layout_marginTop="65dp"
             android:fontFamily="@font/cybertooth0007"
-            android:textColor="@color/white"
-            android:textColorHighlight="@color/black"
             android:shadowColor="@color/blue"
             android:shadowRadius="10"
+            android:text="rating"
+            android:textColor="@color/white"
+            android:textColorHighlight="@color/black"
             android:textSize="12sp"
-            android:layout_marginTop="65dp"
-            app:layout_constraintTop_toTopOf="@+id/rating_button"
+            app:layout_constraintLeft_toLeftOf="@+id/rating_button"
             app:layout_constraintRight_toRightOf="@+id/rating_button"
-            app:layout_constraintLeft_toLeftOf="@+id/rating_button"/>
+            app:layout_constraintTop_toTopOf="@+id/rating_button" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1158,9 +1386,8 @@
         android:id="@+id/settings_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:background="#77333FFF"
-        >
+        android:visibility="gone">
 
         <TableLayout
             android:layout_width="match_parent"
@@ -1169,8 +1396,9 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_marginTop="110dp">
+                android:layout_marginTop="110dp"
+                android:gravity="center">
+
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -1180,9 +1408,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:height="50dp"
                         android:text="Volume"
-                        android:textColor="@color/white"
-                        android:height="50dp"/>
+                        android:textColor="@color/white" />
                 </TableRow>
 
                 <TableRow
@@ -1190,6 +1418,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="vertical">
+
                     <SeekBar
                         android:id="@+id/volume_seek_bar"
                         android:layout_width="500dp"
@@ -1200,8 +1429,9 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:gravity="center">
+
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -1211,10 +1441,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:height="50dp"
                         android:text="Language"
-                        android:textColor="@color/white"
-                        android:height="50dp"/>
+                        android:textColor="@color/white" />
                 </TableRow>
+
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -1224,7 +1455,7 @@
                     <Spinner
                         android:id="@+id/language_spinner"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
                 </TableRow>
             </TableRow>
 
@@ -1239,17 +1470,15 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/settings_to_home"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:text="BACK"
-            />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

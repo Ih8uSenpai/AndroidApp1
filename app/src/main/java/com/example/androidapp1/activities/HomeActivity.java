@@ -25,6 +25,8 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -34,12 +36,14 @@ import android.widget.VideoView;
 
 import com.example.androidapp1.fragments.FragmentInteractionListener;
 import com.example.androidapp1.fragments.GachaFragment;
-import com.example.androidapp1.adapters.InventoryAdapter;
+import com.example.androidapp1.adapters.InventoryConeAdapter;
+import com.example.androidapp1.models.ConeUserdata;
 import com.example.androidapp1.models.InventoryItem;
 import com.example.androidapp1.models.User;
 import com.example.androidapp1.models.UserData;
 import com.example.androidapp1.R;
 import com.example.androidapp1.engine.Engine;
+import com.example.androidapp1.utils.Constants;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -56,21 +60,7 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements FragmentInteractionListener {
 
-    private static final int CONES_SIZE = 3;
-    private static final int ARTIFACTS_SIZE = 5;
-    private static final int ITEMS_SIZE = 2;
-    int[] exp_table = new int[]{100, 200, 320, 450, 600, 850, 1200, 1600, 2200, 3000,
-            3751, 4212, 4912, 5921, 7123, 8234, 9653, 10923, 12402, 14329,
-            16481, 18982, 21424, 24021, 27965, 32420, 36831, 41242, 47634, 55131,
-            62521, 70123, 79123, 89123, 103211, 112381, 124181, 137123, 151271, 165247,
-            181427, 196148, 216471, 238131, 260812, 284881, 310161, 342518, 381271, 459211,
-            561412, 725219, 920001, 1201231, 1601231, 2301231, 3101231, 4101231, 5501231, 10501231, 17501231};
-    int[] characters_exp_table = new int[]{100, 200, 320, 450, 600, 850, 1200, 1600, 2200, 3000,
-            3751, 4212, 4912, 5921, 7123, 8234, 9653, 10923, 12402, 14329,
-            16481, 18982, 21424, 24021, 27965, 32420, 36831, 41242, 47634, 55131,
-            62521, 70123, 79123, 89123, 103211, 112381, 124181, 137123, 151271, 165247,
-            181427, 196148, 216471, 238131, 260812, 284881, 310161, 342518, 381271, 459211,
-            561412, 725219, 920001, 1201231, 1601231, 2301231, 3101231, 4101231, 5501231, 10501231, 17501231};
+
     public static String[] loot_table_3star = new String[]{"Threads of Fate", "Echoes of the Forgotten", "Veil of Serenity", "Glimmer of Hope", "Whispers of Time", "Mists of Solitude", "Eclipsed Moon", "Shattered Illusions"};
     public static String[] loot_table_4star = new String[]{"Codex of the Unfathomable", "Resonance of the Void", "Vortex of Forgotten Dreams", "Nexus of Cosmic Synchronicity", "Tempest of Calamity", "Phantasmal Crucible", "Odyssey of the Ancestral", "Aetherial Quasar"};
     public static String[] loot_table_5star = new String[]{"Kafka", "Kiana", "Blade"};
@@ -141,7 +131,7 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
     Spinner language_spinner;
 
     GridView inventory_grid_cones, inventory_grid_artifacts, inventory_grid_items;
-    List<InventoryItem> items_cone, items_artifact, items_item;
+    List<ConeUserdata> items_cone, items_artifact, items_item;
     ImageButton events_btn;
     private static ArrayList<Integer> coneIds, artifactIds, itemsIds;
     TextView inventory_section_name;
@@ -151,6 +141,11 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
     ImageButton guild_button;
 
     FrameLayout fragmentContainer;
+    TextView item_name_details, item_description, hp_stat_cone_text_details, atk_stat_cone_text_details, def_stat_cone_text_details;
+    LinearLayout item_details;
+    ImageView item_image_details, star4_details, star5_details;
+    TextView item_name_details_line, cone_lvl_details, item_ability_details, item_lvl;
+    AppCompatButton level_up_details;
 
 
 
@@ -251,14 +246,16 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
                 gold.setText(String.format("%d", current_user_data.getGold()));
                 gold_inv.setText(String.format("%d", current_user_data.getGold()));
                 gems_inv.setText(String.format("%d", current_user_data.getGems()));
-                levelProgressBar.setMax(exp_table[current_user_data.getLvl() + 1] - exp_table[current_user_data.getLvl()]);
-                levelProgressBar.setProgress(current_user_data.getExp() - exp_table[current_user_data.getLvl()]);
+                levelProgressBar.setMax(Constants.exp_table[current_user_data.getLvl() + 1] - Constants.exp_table[current_user_data.getLvl()]);
+                levelProgressBar.setProgress(current_user_data.getExp() - Constants.exp_table[current_user_data.getLvl()]);
                 items_cone = parseItemsFromDB_cones();
                 items_artifact = parseItemsFromDB_artifacts();
                 items_item = parseItemsFromDB_items();
-                inventory_grid_cones.setAdapter(new InventoryAdapter(HomeActivity.this, items_cone));
-                inventory_grid_artifacts.setAdapter(new InventoryAdapter(HomeActivity.this, items_artifact));
-                inventory_grid_items.setAdapter(new InventoryAdapter(HomeActivity.this, items_item));
+                //inventory_grid_cones.setAdapter(new InventoryConeAdapter(HomeActivity.this, items_cone, item_name_details, item_description, item_details, item_image_details, item_name_details_line, hp_stat_cone_text_details, atk_stat_cone_text_details, def_stat_cone_text_details, cone_lvl_details));
+                View rootView = getWindow().getDecorView().getRootView();
+                inventory_grid_cones.setAdapter(new InventoryConeAdapter(HomeActivity.this, items_cone, rootView, usersData));
+                //inventory_grid_artifacts.setAdapter(new InventoryConeAdapter(HomeActivity.this, items_artifact, item_name_details, item_description, item_details, item_image_details));
+                //inventory_grid_items.setAdapter(new InventoryConeAdapter(HomeActivity.this, items_item, item_name_details, item_description, item_details, item_image_details));
 
                 /*for(DataSnapshot ds : dataSnapshot.getChildren())
                 {
@@ -327,17 +324,17 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         coneIds = new ArrayList<>();
         artifactIds = new ArrayList<>();
         itemsIds = new ArrayList<>();
-        for (int i = 0; i < CONES_SIZE; i++) {
+        for (int i = 0; i < Constants.CONES_SIZE; i++) {
             String objectPath = "raw/" + "cone" + (i + 1);
             int resourceId = this.getResources().getIdentifier(objectPath, null, this.getPackageName());
             coneIds.add(resourceId);
         }
-        for (int i = 0; i < ARTIFACTS_SIZE; i++) {
+        for (int i = 0; i < Constants.ARTIFACTS_SIZE; i++) {
             String objectPath = "raw/" + "cone" + (i + 1);
             int resourceId = this.getResources().getIdentifier(objectPath, null, this.getPackageName());
             coneIds.add(resourceId);
         }
-        for (int i = 0; i < ITEMS_SIZE; i++) {
+        for (int i = 0; i < Constants.ITEMS_SIZE; i++) {
             String objectPath = "raw/" + "cone" + (i + 1);
             int resourceId = this.getResources().getIdentifier(objectPath, null, this.getPackageName());
             coneIds.add(resourceId);
@@ -355,11 +352,8 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         inventory_grid_cones = findViewById(R.id.inventory_grid_cones);
         inventory_grid_artifacts = findViewById(R.id.inventory_grid_artifacts);
         inventory_grid_items = findViewById(R.id.inventory_grid_items);
-        /*
-        inventory_grid_cones.setAdapter(new InventoryAdapter(this, items_cone));
-        inventory_grid_artifacts.setAdapter(new InventoryAdapter(this, items_artifact));
-        inventory_grid_items.setAdapter(new InventoryAdapter(this, items_item));
-         */
+
+
         // settings screen vars
         volume_seek_bar = findViewById(R.id.volume_seek_bar);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -405,30 +399,79 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         guild_button = findViewById(R.id.guild_button);
         fragmentContainer = findViewById(R.id.fragment_container);
 
+        item_description = findViewById(R.id.item_description);
+        item_name_details = findViewById(R.id.item_name_details);
+        item_details = findViewById(R.id.item_details);
+        item_image_details = findViewById(R.id.item_image_details);
+        hp_stat_cone_text_details = findViewById(R.id.hp_stat_cone_text_details);
+        atk_stat_cone_text_details = findViewById(R.id.atk_stat_cone_text_details);
+        def_stat_cone_text_details = findViewById(R.id.def_stat_cone_text_details);
+        star4_details = findViewById(R.id.star4_details);
+        star5_details = findViewById(R.id.star5_details);
+        item_name_details_line = findViewById(R.id.item_name_details_line);
+        cone_lvl_details = findViewById(R.id.cone_lvl_details);
+        item_ability_details = findViewById(R.id.item_ability_details);
+        level_up_details = findViewById(R.id.level_up_details);
     }
 
-
-    public static List<InventoryItem> parseItemsFromFile_cones(Context context, int resourceId) {
-        List<InventoryItem> items = new ArrayList<>();
-        int i = 0;
-        int rarity = 3;
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(resourceId)))) {
-            String nameLine;
-            String descriptionLine;
-            while ((nameLine = br.readLine()) != null && (descriptionLine = br.readLine()) != null) {
-                if (i >= 8)
-                    rarity = 4;
-                String name = nameLine.substring(nameLine.indexOf(':') + 1).trim();
-                String description = descriptionLine.substring(descriptionLine.indexOf(':') + 1).trim();
-                items.add(new InventoryItem(R.drawable.cone1, name, description, rarity));
-                i++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static int getDrawableCone(int i){
+        int cone = 0;
+        switch (i){
+            case 1:
+                cone = R.drawable.cone1;
+                break;
+            case 2:
+                cone = R.drawable.cone2;
+                break;
+            case 3:
+                cone = R.drawable.cone3;
+                break;
+            case 4:
+                cone = R.drawable.cone4;
+                break;
+            case 5:
+                cone = R.drawable.cone5;
+                break;
+            case 6:
+                cone = R.drawable.cone6;
+                break;
+            case 7:
+                cone = R.drawable.cone7;
+                break;
+            case 8:
+                cone = R.drawable.cone8;
+                break;
+            case 9:
+                cone = R.drawable.cone9;
+                break;
+            case 10:
+                cone = R.drawable.cone10;
+                break;
+            case 11:
+                cone = R.drawable.cone11;
+                break;
+            case 12:
+                cone = R.drawable.cone12;
+                break;
+            case 13:
+                cone = R.drawable.cone13;
+                break;
+            case 14:
+                cone = R.drawable.cone14;
+                break;
+            case 15:
+                cone = R.drawable.cone15;
+                break;
+            case 16:
+                cone = R.drawable.cone16;
+                break;
+            default:
+                cone = R.drawable.cone1;
+                break;
         }
-
-        return items;
+        return cone;
     }
+
     public static List<InventoryItem> parseItemsFromFile_artifacts(Context context, int resourceId) {
         List<InventoryItem> items = new ArrayList<>();
 
@@ -446,60 +489,7 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
 
         return items;
     }
-    public static int getDrawableCone(int i){
-        int cone = 0;
-        switch (i){
-            case 1:
-                cone = R.drawable.cone1;
-                break;
-            case 2:
-                cone = R.drawable.cone2;
-                break;
-            case 3:
-                cone = R.drawable.cone3;
-                break;
-            case 4:
-                cone = R.drawable.cone1;
-                break;
-            case 5:
-                cone = R.drawable.cone1;
-                break;
-            case 6:
-                cone = R.drawable.cone1;
-                break;
-            case 7:
-                cone = R.drawable.cone1;
-                break;
-            case 8:
-                cone = R.drawable.cone1;
-                break;
-            case 9:
-                cone = R.drawable.cone1;
-                break;
-            case 10:
-                cone = R.drawable.cone1;
-                break;
-            case 11:
-                cone = R.drawable.cone1;
-                break;
-            case 12:
-                cone = R.drawable.cone1;
-                break;
-            case 13:
-                cone = R.drawable.cone1;
-                break;
-            case 14:
-                cone = R.drawable.cone1;
-                break;
-            case 15:
-                cone = R.drawable.cone1;
-                break;
-            case 16:
-                cone = R.drawable.cone1;
-                break;
-        }
-        return cone;
-    }
+
     public static List<InventoryItem> parseItemsFromFile_items(Context context, int resourceId) {
         List<InventoryItem> items = new ArrayList<>();
         int i = 0;
@@ -519,37 +509,47 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         return items;
     }
 
-    public List<InventoryItem> parseItemsFromDB_cones() {
-        List<InventoryItem> obtained_items = new ArrayList<>();
-        List<InventoryItem> all_items = current_user_data.getCones();
+    public List<ConeUserdata> parseItemsFromDB_cones() {
+        List<ConeUserdata> obtained_items = new ArrayList<>();
+        List<ConeUserdata> all_items = current_user_data.getCones();
+
         for (int i = 0; i < all_items.size(); i++){
-            if (all_items.get(i).getIs_obtained())
-                obtained_items.add(new InventoryItem(getDrawableCone(i + 1),
-                        all_items.get(i).getName(),
-                        all_items.get(i).getDescription(),
-                        "function" + i, all_items.get(i).getRarity()));
-                //obtained_items.add(all_items.get(i));
+            ConeUserdata current_item = all_items.get(i);
+            if (current_item.isObtained()){
+                obtained_items.add(current_item);
+            }
+        }
+        if(all_items.size() == 0) {
+            int t = 0;
+            int b = 1 / t;
         }
         return obtained_items;
     }
-    public List<InventoryItem> parseItemsFromDB_artifacts() {
-        List<InventoryItem> obtained_items = new ArrayList<>();
-        List<InventoryItem> all_items = current_user_data.getArtifacts();
-        for (int i = 0; i < all_items.size(); i++){
-            if (all_items.get(i).getIs_obtained())
-                obtained_items.add(all_items.get(i));
-        }
-        return obtained_items;
-    }
-    public List<InventoryItem> parseItemsFromDB_items() {
-        List<InventoryItem> obtained_items = new ArrayList<>();
-        List<InventoryItem> all_items = current_user_data.getItems();
+    public List<ConeUserdata> parseItemsFromDB_artifacts() {
+        List<ConeUserdata> obtained_items = new ArrayList<>();
+        /*
+        List<Cone> all_items = current_user_data.getArtifacts();
         for (int i = 0; i < all_items.size(); i++){
             if (all_items.get(i).getIs_obtained())
                 obtained_items.add(all_items.get(i));
         }
+        */
         return obtained_items;
     }
+    public List<ConeUserdata> parseItemsFromDB_items() {
+        List<ConeUserdata> obtained_items = new ArrayList<>();
+        /*
+        List<Cone> all_items = current_user_data.getItems();
+
+        for (int i = 0; i < all_items.size(); i++){
+            if (all_items.get(i).getIs_obtained())
+                obtained_items.add(all_items.get(i));
+        }
+        */
+
+        return obtained_items;
+    }
+
 
     private void setOnclickListeners(){
 
@@ -571,7 +571,7 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         get_exp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                current_user_data.gainExp(200, exp_table, usersData);
+                current_user_data.gainExp(200, Constants.exp_table, usersData);
             }
         });
         get_gold.setOnClickListener(new View.OnClickListener() {
@@ -645,28 +645,37 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         cones_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                inventory_section_name.setText("Cones");
-                inventory_grid_cones.setVisibility(View.VISIBLE);
-                inventory_grid_artifacts.setVisibility(View.GONE);
-                inventory_grid_items.setVisibility(View.GONE);
+                if (inventory_grid_cones.getVisibility() != View.VISIBLE) {
+                    inventory_section_name.setText("Cones");
+                    inventory_grid_cones.setVisibility(View.VISIBLE);
+                    inventory_grid_artifacts.setVisibility(View.GONE);
+                    inventory_grid_items.setVisibility(View.GONE);
+                    item_details.setVisibility(View.GONE);
+                }
             }
         });
         artifacts_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                inventory_section_name.setText("Artifacts");
-                inventory_grid_artifacts.setVisibility(View.VISIBLE);
-                inventory_grid_cones.setVisibility(View.GONE);
-                inventory_grid_items.setVisibility(View.GONE);
+                if (inventory_grid_artifacts.getVisibility() != View.VISIBLE) {
+                    inventory_section_name.setText("Artifacts");
+                    inventory_grid_artifacts.setVisibility(View.VISIBLE);
+                    inventory_grid_cones.setVisibility(View.GONE);
+                    inventory_grid_items.setVisibility(View.GONE);
+                    item_details.setVisibility(View.GONE);
+                }
             }
         });
         items_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                inventory_section_name.setText("Items");
-                inventory_grid_items.setVisibility(View.VISIBLE);
-                inventory_grid_cones.setVisibility(View.GONE);
-                inventory_grid_artifacts.setVisibility(View.GONE);
+                if (inventory_grid_items.getVisibility() != View.VISIBLE) {
+                    inventory_section_name.setText("Items");
+                    inventory_grid_items.setVisibility(View.VISIBLE);
+                    inventory_grid_cones.setVisibility(View.GONE);
+                    inventory_grid_artifacts.setVisibility(View.GONE);
+                    item_details.setVisibility(View.GONE);
+                }
             }
         });
         inventory_button.setOnClickListener(new View.OnClickListener() {
@@ -735,6 +744,7 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
 
             }
         });
+
 
 
     }
