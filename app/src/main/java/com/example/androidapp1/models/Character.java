@@ -3,18 +3,21 @@ package com.example.androidapp1.models;
 import com.google.firebase.database.DatabaseReference;
 
 public class Character {
+    private int id;
     private String name;
     private int exp, character_lvl, hp, attack, defense, crit_chance, crit_dmg, eidolon;
     private String ability;
     private String passive;
     private String talent;
-    private boolean is_obtained;
+    private boolean isObtained;
 
     public Character() {
         // Default constructor required for calls to DataSnapshot.getValue(Character.class)
     }
 
-    public Character(String name, int character_lvl, int hp, int attack, int defense, int crit_chance, int crit_dmg, String ability, String passive, String talent, boolean is_obtained) {
+
+    public Character(int id, String name, int character_lvl, int hp, int attack, int defense, int crit_chance, int crit_dmg, String ability, String passive, String talent, boolean isObtained) {
+        this.id = id;
         this.name = name;
         this.character_lvl = character_lvl;
         this.hp = hp;
@@ -25,13 +28,12 @@ public class Character {
         this.ability = ability;
         this.passive = passive;
         this.talent = talent;
-        this.is_obtained = is_obtained;
+        this.isObtained = isObtained;
     }
 
 
     // database push functions
-    private void changeExp(int exp_gained, int[] characters_exp_table, DatabaseReference usersData)
-    {
+    private void changeExp(int exp_gained, int[] characters_exp_table, DatabaseReference usersData) {
         exp += exp_gained;
         while (character_lvl < 50 && exp > characters_exp_table[character_lvl + 1]) {
             character_lvl++;
@@ -39,36 +41,31 @@ public class Character {
         usersData.child("characters").child(name).child("exp").setValue(exp);
         usersData.child("characters").child(name).child("character_lvl").setValue(character_lvl);
     }
-    private void obtain(DatabaseReference usersData){
-        if (!is_obtained)
-            is_obtained = true;
-        else if (eidolon < 6) {
-            eidolon++;
-        }
-        usersData.child("characters").child(name).child("is_obtained").setValue(is_obtained);
-        usersData.child("characters").child(name).child("eidolon").setValue(eidolon);
-    }
-    private void changeHp(int hp, DatabaseReference usersData){
+
+    private void changeHp(int hp, DatabaseReference usersData) {
         this.hp = hp;
         usersData.child("characters").child(name).child("hp").setValue(hp);
     }
-    private void changeAttack(int attack, DatabaseReference usersData){
+
+    private void changeAttack(int attack, DatabaseReference usersData) {
         this.attack = attack;
         usersData.child("characters").child(name).child("attack").setValue(attack);
     }
-    private void changeDefense(int defense, DatabaseReference usersData){
+
+    private void changeDefense(int defense, DatabaseReference usersData) {
         this.defense = defense;
         usersData.child("characters").child(name).child("defense").setValue(defense);
     }
-    private void changeCrit_chance(int crit_chance, DatabaseReference usersData){
+
+    private void changeCrit_chance(int crit_chance, DatabaseReference usersData) {
         this.crit_chance = crit_chance;
         usersData.child("characters").child(name).child("crit_chance").setValue(crit_chance);
     }
-    private void changeCrit_dmg(int crit_dmg, DatabaseReference usersData){
+
+    private void changeCrit_dmg(int crit_dmg, DatabaseReference usersData) {
         this.crit_dmg = crit_dmg;
         usersData.child("characters").child(name).child("crit_dmg").setValue(crit_dmg);
     }
-
 
 
     // getters and setters
@@ -170,11 +167,25 @@ public class Character {
         this.talent = talent;
     }
 
-    public boolean getIs_obtained() {
-        return is_obtained;
+    public boolean isObtained() {
+        return isObtained;
     }
 
-    public void setIs_obtained(boolean is_obtained) {
-        this.is_obtained = is_obtained;
+    public void setObtained(boolean isObtained, DatabaseReference usersData) {
+        if (!this.isObtained)
+            this.isObtained = true;
+        else if (eidolon < 6) {
+            eidolon++;
+        }
+        usersData.child("characters").child(String.valueOf(id)).child("obtained").setValue(this.isObtained);
+        usersData.child("characters").child(String.valueOf(id)).child("eidolon").setValue(eidolon);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

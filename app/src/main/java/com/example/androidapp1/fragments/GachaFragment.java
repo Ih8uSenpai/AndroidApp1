@@ -1,6 +1,7 @@
 package com.example.androidapp1.fragments;
 
 import static com.example.androidapp1.activities.HomeActivity.current_user_data;
+import static com.example.androidapp1.activities.HomeActivity.getDrawableCone;
 import static com.example.androidapp1.activities.HomeActivity.loot_table_3star;
 import static com.example.androidapp1.activities.HomeActivity.loot_table_4star;
 import static com.example.androidapp1.activities.HomeActivity.loot_table_5star;
@@ -10,6 +11,7 @@ import static com.example.androidapp1.activities.HomeActivity.usersData;
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -73,12 +75,14 @@ public class GachaFragment extends Fragment {
     SurfaceView star_sky;
     VideoView clip_5star;
     boolean clip_is_playing = false;
+    private int item_picture_field_height, item_picture_field_width;
+    ImageView character_picture_field;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_fragment1, container, false);
+        view = inflater.inflate(R.layout.fragment_gacha, container, false);
         init();
         setOnClickListeners();
 
@@ -109,9 +113,11 @@ public class GachaFragment extends Fragment {
         item_name_field = (TextView) dialog.findViewById(R.id.item_name_field);
         item_picture_field = (ShapeableImageView) dialog.findViewById(R.id.item_picture_field);
         item_picture_field.setImageResource(R.drawable.card1);
+        character_picture_field = (ImageView) dialog.findViewById(R.id.character_picture_field);
         star_sky = (SurfaceView) dialog.findViewById(R.id.star_sky);
         pull_animation = new MediaPlayer();
         appear_animation = new MediaPlayer();
+
         
         SurfaceHolder.Callback callback1 = new SurfaceHolder.Callback() {
             @Override
@@ -164,8 +170,15 @@ public class GachaFragment extends Fragment {
         gold = view.findViewById(R.id.gold_gacha);
         gold.setText(String.format("%d", current_user_data.getGold()));
         gems1.setText(String.format("%d", current_user_data.getGems()));
+
+    }
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
     public void setOnClickListeners(){
         standart_banner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -268,14 +281,14 @@ public class GachaFragment extends Fragment {
         current_user_data.setPulls_to_5star(current_user_data.getPulls_to_5star() + 1);
 
         // guarantee pulls
-        if (current_user_data.getPulls_to_5star() >= 50){
+        if (current_user_data.getPulls_to_5star() >= 10){
             loot_value = random.nextInt(loot_table_5star.length);
             current_user_data.setLoot_table(current_user_data.generateLootTable(current_user_data.getLoot_table()));
             loot = loot_table_5star[loot_value];
             current_user_data.updatePulls_to_5star(0, usersData);
             ost1.pause();
             //current_user_data.getCones().get(loot_value).setObtained(true, String.valueOf(loot_value), usersData);
-
+            current_user_data.getCharacterByName(loot).setObtained(true, usersData);
             return new pair(5, loot_value);
         }
         else if (current_user_data.getPulls_to_4star() >= 10){
@@ -320,6 +333,7 @@ public class GachaFragment extends Fragment {
 
             //current_user_data.getCones().get(loot_value).setObtained(true, String.valueOf(loot_value), usersData);
             loot = loot_table_5star[loot_value];
+            current_user_data.getCharacterByName(loot).setObtained(true, usersData);
         }
 
         if (ost1.isPlaying())
@@ -369,12 +383,21 @@ public class GachaFragment extends Fragment {
         switch (rarity){
             case 3:
                 item_name_field.setText(loot_table_3star[value]);
+                item_picture_field.setMinimumWidth(item_picture_field_width);
+                item_picture_field.setMinimumHeight(item_picture_field_height);
+                item_picture_field.setImageResource(getDrawableCone(value));
                 break;
             case 4:
                 item_name_field.setText(loot_table_4star[value]);
+                item_picture_field.setMinimumWidth(item_picture_field_width);
+                item_picture_field.setMinimumHeight(item_picture_field_height);
+                item_picture_field.setImageResource(getDrawableCone(value+8));
                 break;
             case 5:
                 item_name_field.setText(loot_table_5star[value]);
+                item_picture_field.setMinimumWidth(getScreenWidth());
+                item_picture_field.setMinimumHeight(getScreenHeight());
+                item_picture_field.setImageResource(getDrawableIDofCharacterByName(loot_table_5star[value]));
                 break;
             default:
                 break;
@@ -399,9 +422,11 @@ public class GachaFragment extends Fragment {
         item_name_field.setVisibility(View.GONE);
 
         item_picture_field.setAlpha((float) 0);
+        character_picture_field.setAlpha((float) 0);
 
         item_name_field.setTranslationX(0);
         item_name_field.setAlpha((float) 0);
+
 
         Thread thread_for_5star = new Thread(new Runnable() {
             @Override
@@ -457,6 +482,7 @@ public class GachaFragment extends Fragment {
                 item_name_field.setTranslationX(0);
                 item_name_field.setAlpha((float) 0);
                 item_name_field.setVisibility(View.VISIBLE);
+
                 item_name_field.animate().setDuration(2000).translationX(-450).alpha(1);
             }
 
@@ -487,15 +513,27 @@ public class GachaFragment extends Fragment {
             });
 
 
-        switch (loot_list.get(i).first) {
+        int rarity = loot_list.get(i).first;
+        int value = loot_list.get(i).second;
+        switch (rarity){
             case 3:
-                item_name_field.setText(loot_table_3star[loot_list.get(i).second]);
+                item_name_field.setText(loot_table_3star[value]);
+                item_picture_field.setVisibility(View.VISIBLE);
+                character_picture_field.setVisibility(View.GONE);
+                item_picture_field.setImageResource(getDrawableCone(value+1));
                 break;
             case 4:
-                item_name_field.setText(loot_table_4star[loot_list.get(i).second]);
+                item_name_field.setText(loot_table_4star[value]);
+                item_picture_field.setVisibility(View.VISIBLE);
+                character_picture_field.setVisibility(View.GONE);
+                item_picture_field.setImageResource(getDrawableCone(value+9));
                 break;
             case 5:
-                item_name_field.setText(loot_table_5star[loot_list.get(i).second]);
+                item_name_field.setText(loot_table_5star[value]);
+                item_picture_field.setVisibility(View.GONE);
+                character_picture_field.setVisibility(View.VISIBLE);
+                character_picture_field.animate().setDuration(5000).alpha(1);
+                character_picture_field.setImageResource(getDrawableIDofCharacterByName(loot_table_5star[value]));;
                 break;
             default:
                 break;
@@ -662,6 +700,25 @@ public class GachaFragment extends Fragment {
                 return;
         }
         pull_animation.setDataSource(getContext(), Uri.parse("android.resource://" + requireContext().getPackageName() + "/" + resId));
+    }
+
+    public int getDrawableIDofCharacterByName(String name){
+        int char_image_id;
+        switch (name) {
+            case "Kafka":
+                char_image_id = R.drawable.kafka_splash;
+                break;
+            case "Kiana":
+                char_image_id = R.drawable.kiana_splash;
+                break;
+            case "Blade":
+                char_image_id = R.drawable.blade_splash;
+                break;
+            default:
+                char_image_id = R.drawable.banner1;
+                break;
+        }
+        return char_image_id;
     }
     
 }

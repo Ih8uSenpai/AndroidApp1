@@ -5,6 +5,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class UserData {
@@ -193,7 +194,7 @@ public class UserData {
 
     public Character getCharacterByName(String name){
         for (Character el: characters) {
-            if (el.getName() == name)
+            if (Objects.equals(el.getName(), name))
                 return el;
         }
         return null;

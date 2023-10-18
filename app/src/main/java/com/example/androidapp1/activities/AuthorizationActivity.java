@@ -133,9 +133,9 @@ public class AuthorizationActivity extends AppCompatActivity {
         usersData = db.getReference("UsersData");
 
         // add characters
-        characters.add(new Character("Kiana", 1, 0, 0, 0, 0, 0, "ability_kiana", "passive_kiana", "talent_kiana", false));
-        characters.add(new Character("Kafka", 1, 0, 0, 0, 0, 0, "ability_kafka", "passive_kafka", "talent_kafka", false));
-        characters.add(new Character("Blade", 1, 0, 0, 0, 0, 0, "ability_blade", "passive_blade", "talent_blade", false));
+        characters.add(new Character(0, "Kiana", 1, 0, 0, 0, 0, 0, "ability_kiana", "passive_kiana", "talent_kiana", false));
+        characters.add(new Character(1, "Kafka", 1, 0, 0, 0, 0, 0, "ability_kafka", "passive_kafka", "talent_kafka", false));
+        characters.add(new Character(2, "Blade", 1, 0, 0, 0, 0, 0, "ability_blade", "passive_blade", "talent_blade", false));
 
         // add inventory items
         coneFirebaseManager = new ConeFirebaseManager();

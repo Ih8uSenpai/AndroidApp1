@@ -2,11 +2,18 @@ package com.example.androidapp1.db_manage;
 
 import androidx.annotation.NonNull;
 
+import com.example.androidapp1.models.Character;
 import com.example.androidapp1.models.UserData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsersDataFirebaseManager {
     private DatabaseReference usersDataRef;
@@ -49,6 +56,7 @@ public class UsersDataFirebaseManager {
                     }
                 });
     }
+
 
     // Дополнительные методы для получения данных и других операций с таблицей UsersData
 }

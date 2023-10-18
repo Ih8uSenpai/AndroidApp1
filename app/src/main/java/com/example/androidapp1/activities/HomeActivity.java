@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.androidapp1.fragments.CharactersFragment;
 import com.example.androidapp1.fragments.FragmentInteractionListener;
 import com.example.androidapp1.fragments.GachaFragment;
 import com.example.androidapp1.adapters.InventoryConeAdapter;
@@ -592,7 +593,8 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         memories_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                replace_fragment();
+                GachaFragment gachaFragment = new GachaFragment();
+                replace_fragment(gachaFragment);
 
 
                 //openMemories();
@@ -697,9 +699,8 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         characters_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, CharactersActivity.class));
-                releaseResources();
-                finish();
+                CharactersFragment charactersFragment = new CharactersFragment();
+                replace_fragment(charactersFragment);
                 //startActivity(new Intent(MainActivity.this, ReadActivity.class));
             }
         });
@@ -749,11 +750,13 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
 
     }
 
-    private void replace_fragment() {
+    private void replace_fragment(Fragment new_fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        fragmentTransaction.replace(R.id.fragment_container, new GachaFragment());
+        //fragmentTransaction.replace(R.id.fragment_container, new GachaFragment());
+        fragmentTransaction.replace(R.id.fragment_container, new_fragment);
+
         /*if (currentFragment == null) {
             fragmentTransaction.replace(R.id.fragment_container, new Gacha_screen());
         } else if (currentFragment instanceof Gacha_screen) {

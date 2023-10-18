@@ -1,11 +1,12 @@
-package com.example.androidapp1.activities;
+package com.example.androidapp1.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
 import com.example.androidapp1.db_manage.UsersDataFirebaseManager;
 import com.example.androidapp1.models.Character;
@@ -34,7 +36,7 @@ import org.rajawali3d.view.SurfaceView;
 
 import java.util.ArrayList;
 
-public class CharactersActivity extends Activity {
+public class CharactersFragment extends Fragment {
 
     //database
     FirebaseAuth auth;
@@ -44,7 +46,6 @@ public class CharactersActivity extends Activity {
     ArrayAdapter adapter;
 
     UserData current_user_data;
-
 
     private MyRenderer renderer_kiana;
     ImageButton kiana_icon;
@@ -70,86 +71,73 @@ public class CharactersActivity extends Activity {
             181427, 196148, 216471, 238131, 260812, 284881, 310161, 342518, 381271, 459211,
             561412, 725219, 920001, 1201231, 1601231, 2301231, 3101231, 4101231, 5501231, 10501231, 17501231};
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_characters);
-        init_all();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_characters, container, false);
+        init_all(view);
         SetOnClickListeners();
         // pull data from db
         getUsersData();
-
         character_image.setImageResource(R.drawable.kiana_bg);
         character_image.setVisibility(View.VISIBLE);
-
         // setting 3d model
         surfaceViewKiana.setZOrderOnTop(true);
         surfaceViewKiana.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        renderer_kiana = new MyRenderer(CharactersActivity.this, "kiana");
+        renderer_kiana = new MyRenderer(requireContext(), "kiana");
         // render surface
         surfaceViewKiana.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         surfaceViewKiana.setSurfaceRenderer(renderer_kiana);
         show_3d_model.setVisibility(View.VISIBLE);
+
+        return view;
     }
 
-
-
-    @Override
-    public boolean onTouchEvent(android.view.MotionEvent event) {
-        if (renderer_kiana != null && surfaceViewKiana.getVisibility() == View.VISIBLE)
-            renderer_kiana.onTouchEvent(event);
-        return super.onTouchEvent(event);
-    }
-
-    private void init_all (){
-        surfaceViewKiana = findViewById(R.id.surface_view_kiana);
-        kiana_icon = findViewById(R.id.kiana_icon);
-        kafka_icon = findViewById(R.id.kafka_icon);
-        blade_icon = findViewById(R.id.blade_icon);
-        character_image = findViewById(R.id.character_image);
-        to_home = findViewById(R.id.charactersToHome);
-        show_3d_model = findViewById(R.id.show_3d_model);
-        constraintLayout = findViewById(R.id.characters_loading_screen);
+    private void init_all(View view) {
+        surfaceViewKiana = view.findViewById(R.id.surface_view_kiana);
+        kiana_icon = view.findViewById(R.id.kiana_icon);
+        kafka_icon = view.findViewById(R.id.kafka_icon);
+        blade_icon = view.findViewById(R.id.blade_icon);
+        character_image = view.findViewById(R.id.character_image);
+        to_home = view.findViewById(R.id.charactersToHome);
+        show_3d_model = view.findViewById(R.id.show_3d_model);
+        constraintLayout = view.findViewById(R.id.characters_loading_screen);
 
         // database interaction variables
         auth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
         usersData = FirebaseDatabase.getInstance().getReference("UsersData").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         users = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        adapter = new ArrayAdapter<String>(this, android.R.layout.activity_list_item);
-
+        adapter = new ArrayAdapter<String>(requireContext(), android.R.layout.activity_list_item);
 
         // set userData fields
-        lvl = findViewById(R.id.details_lvl);
-        exp = findViewById(R.id.details_lvl_progress);
-        character_name = findViewById(R.id.details_character_name);
-        hp = findViewById(R.id.details_stats_hp);
-        attack = findViewById(R.id.details_stats_atk);
-        def = findViewById(R.id.details_stats_def);
-        crit_rate = findViewById(R.id.details_stats_critRate);
-        crit_dmg = findViewById(R.id.details_stats_critDMG);
+        lvl = view.findViewById(R.id.details_lvl);
+        exp = view.findViewById(R.id.details_lvl_progress);
+        character_name = view.findViewById(R.id.details_character_name);
+        hp = view.findViewById(R.id.details_stats_hp);
+        attack = view.findViewById(R.id.details_stats_atk);
+        def = view.findViewById(R.id.details_stats_def);
+        crit_rate = view.findViewById(R.id.details_stats_critRate);
+        crit_dmg = view.findViewById(R.id.details_stats_critDMG);
+
     }
 
-    public void SetOnClickListeners(){
+    public void SetOnClickListeners() {
         kiana_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 character_image.setImageResource(R.drawable.kiana_bg);
                 character_image.setVisibility(View.VISIBLE);
                 show_3d_model.setVisibility(View.VISIBLE);
-                //renderer_kiana.onResume();
-                //surfaceViewKiana.setVisibility(View.VISIBLE);
             }
         });
+
         show_3d_model.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (character_image.getVisibility() == View.GONE) {
                     character_image.setVisibility(View.VISIBLE);
                     show_3d_model.setText("3d model");
-                }
-                else {
+                } else {
                     character_image.setVisibility(View.GONE);
                     show_3d_model.setText("2d model");
                     if (renderer_kiana != null) {
@@ -168,43 +156,38 @@ public class CharactersActivity extends Activity {
                 character_image.setImageResource(R.drawable.kafka_bg);
                 character_image.setVisibility(View.VISIBLE);
                 show_3d_model.setVisibility(View.GONE);
-                //surfaceViewKiana.setVisibility(View.GONE);
             }
         });
+
         blade_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 character_image.setImageResource(R.drawable.blade_bg1);
                 character_image.setVisibility(View.VISIBLE);
                 show_3d_model.setVisibility(View.GONE);
-                //surfaceViewKiana.setVisibility(View.GONE);
             }
         });
 
         to_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CharactersActivity.this, HomeActivity.class));
-                finish();
+                if (getActivity() instanceof FragmentInteractionListener) {
+                    ((FragmentInteractionListener) getActivity()).onFragmentClosed();
+                }
             }
         });
 
+
     }
 
-
-
-    private void getUsersData()
-    {
+    private void getUsersData() {
         ValueEventListener vListener = new ValueEventListener() {
             @SuppressLint("DefaultLocale")
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
-                //User user = dataSnapshot.getValue(User.class);
-                //assert user != null;
-                //username.setText(user.getName());
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 current_user_data = dataSnapshot.getValue(UserData.class);
                 assert current_user_data != null;
+                setVisibleForObtainedCharacters();
                 lvl.setText("Lv." + String.format("%d", current_user_data.getCharacters().get(0).getCharacter_lvl()));
                 hp.setText(String.format("%d", current_user_data.getCharacters().get(0).getHp()));
                 def.setText(String.format("%d", current_user_data.getCharacters().get(0).getDefense()));
@@ -214,30 +197,41 @@ public class CharactersActivity extends Activity {
                 character_name.setText(current_user_data.getCharacters().get(0).getName());
                 exp.setMax(characters_exp_table[current_user_data.getCharacters().get(0).getCharacter_lvl() + 1] - characters_exp_table[current_user_data.getCharacters().get(0).getCharacter_lvl()]);
                 exp.setProgress(current_user_data.getCharacters().get(0).getExp() - characters_exp_table[current_user_data.getCharacters().get(0).getCharacter_lvl()]);
-
-                /*if (current_user_data.getCharacterByName("Kafka").getIs_obtained() == true)
-                    kafka_icon.setVisibility(View.VISIBLE);
-                if (current_user_data.getCharacterByName("Blade").getIs_obtained() == true)
-                    kafka_icon.setVisibility(View.VISIBLE);*/
-
-
-                /*for(DataSnapshot ds : dataSnapshot.getChildren())
-                {
-                    User user = ds.getValue(User.class);
-                    assert user != null;
-                    listData.add(user.getName());
-                    listTemp.add(user);
-                }*/
                 adapter.notifyDataSetChanged();
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         };
         usersData.addValueEventListener(vListener);
     }
 
+    public void setVisibleForObtainedCharacters(){
+        ArrayList<Character> characters = current_user_data.getCharacters();
+        for (Character character: characters) {
+            if (character.isObtained()){
+                System.out.println("character" + character.getName() + " obtained");
+                setVisibleForCharacter(character.getName());
+            }
+            else {
+                System.out.println("character" + character.getName() + " is NOT obtained");
+            }
+        }
+    }
+    public void setVisibleForCharacter(String name){
+        switch (name){
+            case "Kiana":
+                kiana_icon.setVisibility(View.VISIBLE);
+                break;
+            case "Kafka":
+                kafka_icon.setVisibility(View.VISIBLE);
+                break;
+            case "Blade":
+                blade_icon.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
+        }
+    }
 }

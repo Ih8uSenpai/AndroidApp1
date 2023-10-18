@@ -35,7 +35,7 @@
             app:layout_constraintLeft_toLeftOf="@id/vguideline_for_banner"
             app:layout_constraintTop_toTopOf="@id/hguideline_for_banner"
             app:layout_constraintWidth_percent="0.65"
-            app:srcCompat="@drawable/event_character_banner" />
+            app:srcCompat="@drawable/banner_background_jingliu" />
 
         <TextView
             android:id="@+id/banner_line"

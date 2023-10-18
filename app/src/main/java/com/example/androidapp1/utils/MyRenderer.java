@@ -91,7 +91,7 @@ public class MyRenderer extends Renderer {
         key.setColor(1.0f, 1.0f, 1.0f);
         key.setPower(2);
         getCurrentScene().addLight(key);*/
-        for (int ind = 1; ind <= 10; ind++) {
+        for (int ind = 1; ind <= 3; ind++) {
             String objectPath = "raw/" + character_name + ind;
             int resourceId = getContext().getResources().getIdentifier(objectPath, null, getContext().getPackageName());
             resourceIds.add(resourceId);
