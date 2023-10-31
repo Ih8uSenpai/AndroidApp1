@@ -296,7 +296,7 @@ public class GachaFragment extends Fragment {
             loot = loot_table_4star[loot_value];
             current_user_data.updatePulls_to_4star(0, usersData);
             ost1.pause();
-            current_user_data.getCones().get(loot_value + 8).setObtained(true, String.valueOf(loot_value + 8), usersData);
+            current_user_data.getCones().get(loot_value + 8).setObtained(true, usersData);
             return new pair(4, loot_value);
         }
 
@@ -316,7 +316,7 @@ public class GachaFragment extends Fragment {
             current_user_data.update_loot_table(rarity_value, usersData);
 
 
-            current_user_data.getCones().get(loot_value).setObtained(true, String.valueOf(loot_value), usersData);
+            current_user_data.getCones().get(loot_value).setObtained(true, usersData);
         } else if (current_user_data.getLoot_table().get(rarity_value).first == 4) {
             loot_value = random.nextInt(loot_table_4star.length);
             loot = loot_table_4star[loot_value];
@@ -324,7 +324,7 @@ public class GachaFragment extends Fragment {
             current_user_data.update_loot_table(rarity_value, usersData);
 
 
-            current_user_data.getCones().get(loot_value + 8).setObtained(true, String.valueOf(loot_value + 8), usersData);
+            current_user_data.getCones().get(loot_value + 8).setObtained(true, usersData);
         } else {
             loot_value = random.nextInt(loot_table_5star.length);
             current_user_data.updatePulls_to_5star(0, usersData);
@@ -440,7 +440,10 @@ public class GachaFragment extends Fragment {
                             clip_5star.setVideoURI(Uri.parse("android.resource://" + requireContext().getPackageName() + "/" + R.raw.kiana_clip));
                             break;
                         case "Blade":
-                            clip_5star.setVideoURI(Uri.parse("android.resource://" + requireContext().getPackageName() + "/" + R.raw.blade_clip));
+                            clip_5star.setVideoURI(Uri.parse("android.resource://" + requireContext().getPackageName() + "/" + R.raw.blade_edit3));
+                            break;
+                        case "Jing Liu":
+                            clip_5star.setVideoURI(Uri.parse("android.resource://" + requireContext().getPackageName() + "/" + R.raw.jingliu_clip));
                             break;
                         default:
                             break;
@@ -713,6 +716,9 @@ public class GachaFragment extends Fragment {
                 break;
             case "Blade":
                 char_image_id = R.drawable.blade_splash;
+                break;
+            case "Jing Liu":
+                char_image_id = R.drawable.jingliu_splash;
                 break;
             default:
                 char_image_id = R.drawable.banner1;

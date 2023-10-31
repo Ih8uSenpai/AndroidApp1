@@ -47,7 +47,7 @@ public class ReadActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                listData.add(dataSnapshot.getValue(User.class).getName());
+                listData.add(dataSnapshot.getValue(User.class).getNickname());
                 /*for(DataSnapshot ds : dataSnapshot.getChildren())
                 {
                     User user = ds.getValue(User.class);

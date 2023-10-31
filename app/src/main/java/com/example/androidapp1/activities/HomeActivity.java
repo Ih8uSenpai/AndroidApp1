@@ -20,8 +20,11 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -34,12 +37,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.androidapp1.fragments.ProfileFragment;
+import com.example.androidapp1.service.UsersDataFirebaseManager;
+import com.example.androidapp1.service.UsersFirebaseManager;
 import com.example.androidapp1.fragments.CharactersFragment;
 import com.example.androidapp1.fragments.FragmentInteractionListener;
 import com.example.androidapp1.fragments.GachaFragment;
 import com.example.androidapp1.adapters.InventoryConeAdapter;
+import com.example.androidapp1.fragments.RatingFragment;
+import com.example.androidapp1.models.Character;
 import com.example.androidapp1.models.ConeUserdata;
-import com.example.androidapp1.models.InventoryItem;
+import com.example.androidapp1.models.Role;
 import com.example.androidapp1.models.User;
 import com.example.androidapp1.models.UserData;
 import com.example.androidapp1.R;
@@ -53,18 +61,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity implements FragmentInteractionListener {
 
 
     public static String[] loot_table_3star = new String[]{"Threads of Fate", "Echoes of the Forgotten", "Veil of Serenity", "Glimmer of Hope", "Whispers of Time", "Mists of Solitude", "Eclipsed Moon", "Shattered Illusions"};
     public static String[] loot_table_4star = new String[]{"Codex of the Unfathomable", "Resonance of the Void", "Vortex of Forgotten Dreams", "Nexus of Cosmic Synchronicity", "Tempest of Calamity", "Phantasmal Crucible", "Odyssey of the Ancestral", "Aetherial Quasar"};
-    public static String[] loot_table_5star = new String[]{"Kafka", "Kiana", "Blade"};
+    public static String[] loot_table_5star = new String[]{"Kafka", "Kiana", "Blade", "Jing Liu"};
     VideoView videoPlayer, play_button;
     public static MediaPlayer ost1;
     static MediaPlayer ost2;
@@ -89,7 +95,7 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
     AppCompatButton get_gold;
     AppCompatButton get_gems;
     ImageButton memories_btn;
-    User current_user;
+    public static User current_user;
     public static UserData current_user_data;
     ArrayAdapter adapter;
     ConstraintLayout home_screen;
@@ -147,17 +153,25 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
     ImageView item_image_details, star4_details, star5_details;
     TextView item_name_details_line, cone_lvl_details, item_ability_details, item_lvl;
     AppCompatButton level_up_details;
+    TextView enhance_cone_text_exp_inventory;
+    TextView no_characters_error;
+    UsersFirebaseManager usersFirebaseManager;
+    UsersDataFirebaseManager usersDataFirebaseManager;
 
-
-
+    ConstraintLayout nickname_screen;
+    AppCompatButton nickname_screen_start_button;
+    EditText nickname_field;
+    TextView nickname_screen_username;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
         // initialisation
         init_all();
+
         // set all listeners
         setOnclickListeners();
         setOnPreparedListeners();
@@ -167,10 +181,13 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         // restart or start music and video
         restartMusic();
         // database read
+
         getUsers();
         getUsersData();
 
+        //printConeIDS();
         //onCreateEnd
+
     }
 
 
@@ -207,15 +224,17 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
     private void getUsers()
     {
         ValueEventListener vListener = new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
                 current_user = dataSnapshot.getValue(User.class);
                 assert current_user != null;
-                String s = current_user.getName();
+                String s = current_user.getNickname();
                 SpannableString ss=new SpannableString(s);
                 ss.setSpan(new UnderlineSpan(), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 username.setText(s);
+                nickname_screen_username.setText("Welcome, " + current_user.getUsername() + "!");
                 //username.setText(ss);
                 adapter.notifyDataSetChanged();
 
@@ -236,9 +255,6 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                //User user = dataSnapshot.getValue(User.class);
-                //assert user != null;
-                //username.setText(user.getName());
                 current_user_data = UserData.getInstance();
                 current_user_data = dataSnapshot.getValue(UserData.class);
                 assert current_user_data != null;
@@ -249,22 +265,20 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
                 gems_inv.setText(String.format("%d", current_user_data.getGems()));
                 levelProgressBar.setMax(Constants.exp_table[current_user_data.getLvl() + 1] - Constants.exp_table[current_user_data.getLvl()]);
                 levelProgressBar.setProgress(current_user_data.getExp() - Constants.exp_table[current_user_data.getLvl()]);
+
                 items_cone = parseItemsFromDB_cones();
                 items_artifact = parseItemsFromDB_artifacts();
                 items_item = parseItemsFromDB_items();
                 //inventory_grid_cones.setAdapter(new InventoryConeAdapter(HomeActivity.this, items_cone, item_name_details, item_description, item_details, item_image_details, item_name_details_line, hp_stat_cone_text_details, atk_stat_cone_text_details, def_stat_cone_text_details, cone_lvl_details));
                 View rootView = getWindow().getDecorView().getRootView();
+                System.out.println("Данные которые мы передаем в адаптер: " + items_cone);
                 inventory_grid_cones.setAdapter(new InventoryConeAdapter(HomeActivity.this, items_cone, rootView, usersData));
                 //inventory_grid_artifacts.setAdapter(new InventoryConeAdapter(HomeActivity.this, items_artifact, item_name_details, item_description, item_details, item_image_details));
                 //inventory_grid_items.setAdapter(new InventoryConeAdapter(HomeActivity.this, items_item, item_name_details, item_description, item_details, item_image_details));
-
-                /*for(DataSnapshot ds : dataSnapshot.getChildren())
-                {
-                    User user = ds.getValue(User.class);
-                    assert user != null;
-                    listData.add(user.getName());
-                    listTemp.add(user);
-                }*/
+                if(checkNullNickname()){
+                    openNicknameScreen();
+                }
+                applyRoles(current_user);
                 adapter.notifyDataSetChanged();
 
             }
@@ -294,7 +308,9 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         ost1.setLooping(false);
     }
     public void init_all(){
-
+        nickname_screen = findViewById(R.id.nickname_screen);
+        nickname_screen_start_button = findViewById(R.id.nickname_screen_start_button);
+        nickname_field = findViewById(R.id.nickname_field);
         home_screen = findViewById(R.id.home_screen);
         memories_screen = findViewById(R.id.memories_screen);
         gems_inv = findViewById(R.id.gems_inv);
@@ -375,6 +391,7 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         // set userData fields
         level = findViewById(R.id.lvl);
         username = findViewById(R.id.username);
+        nickname_screen_username = findViewById(R.id.nickname_screen_username);
         levelProgressBar = findViewById(R.id.progress);
         gold = findViewById(R.id.gold);
         gems = findViewById(R.id.gems);
@@ -413,7 +430,14 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         cone_lvl_details = findViewById(R.id.cone_lvl_details);
         item_ability_details = findViewById(R.id.item_ability_details);
         level_up_details = findViewById(R.id.level_up_details);
+        enhance_cone_text_exp_inventory = findViewById(R.id.enhance_cone_text_exp_inventory);
+        no_characters_error = findViewById(R.id.no_characters_error);
+
+        usersDataFirebaseManager = new UsersDataFirebaseManager();
+        usersFirebaseManager = new UsersFirebaseManager();
     }
+
+
 
     public static int getDrawableCone(int i){
         int cone = 0;
@@ -473,44 +497,16 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         return cone;
     }
 
-    public static List<InventoryItem> parseItemsFromFile_artifacts(Context context, int resourceId) {
-        List<InventoryItem> items = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(resourceId)))) {
-            String nameLine;
-            String descriptionLine;
-            while ((nameLine = br.readLine()) != null && (descriptionLine = br.readLine()) != null) {
-                String name = nameLine.substring(nameLine.indexOf(':') + 1).trim();
-                String description = descriptionLine.substring(descriptionLine.indexOf(':') + 1).trim();
-                items.add(new InventoryItem(R.drawable.cone2, name, description));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void printConeIDS(){
+        for (int i = 1; i <= 16; i++) {
+            System.out.println("cone " + i + " ID = " + getDrawableCone(i));
         }
-
-        return items;
     }
 
-    public static List<InventoryItem> parseItemsFromFile_items(Context context, int resourceId) {
-        List<InventoryItem> items = new ArrayList<>();
-        int i = 0;
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(context.getResources().openRawResource(resourceId)))) {
-            String nameLine;
-            String descriptionLine;
-            while ((nameLine = br.readLine()) != null && (descriptionLine = br.readLine()) != null) {
-                String name = nameLine.substring(nameLine.indexOf(':') + 1).trim();
-                String description = descriptionLine.substring(descriptionLine.indexOf(':') + 1).trim();
-                items.add(new InventoryItem(R.drawable.cone3, name, description));
-                i++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        return items;
-    }
 
-    public List<ConeUserdata> parseItemsFromDB_cones() {
+
+    public static List<ConeUserdata> parseItemsFromDB_cones() {
         List<ConeUserdata> obtained_items = new ArrayList<>();
         List<ConeUserdata> all_items = current_user_data.getCones();
 
@@ -520,34 +516,15 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
                 obtained_items.add(current_item);
             }
         }
-        if(all_items.size() == 0) {
-            int t = 0;
-            int b = 1 / t;
-        }
+
         return obtained_items;
     }
     public List<ConeUserdata> parseItemsFromDB_artifacts() {
         List<ConeUserdata> obtained_items = new ArrayList<>();
-        /*
-        List<Cone> all_items = current_user_data.getArtifacts();
-        for (int i = 0; i < all_items.size(); i++){
-            if (all_items.get(i).getIs_obtained())
-                obtained_items.add(all_items.get(i));
-        }
-        */
         return obtained_items;
     }
     public List<ConeUserdata> parseItemsFromDB_items() {
         List<ConeUserdata> obtained_items = new ArrayList<>();
-        /*
-        List<Cone> all_items = current_user_data.getItems();
-
-        for (int i = 0; i < all_items.size(); i++){
-            if (all_items.get(i).getIs_obtained())
-                obtained_items.add(all_items.get(i));
-        }
-        */
-
         return obtained_items;
     }
 
@@ -595,9 +572,6 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
             public void onClick(View view) {
                 GachaFragment gachaFragment = new GachaFragment();
                 replace_fragment(gachaFragment);
-
-
-                //openMemories();
             }
         });
         /*pull_animation_1.setOnClickListener(new View.OnClickListener() {
@@ -609,9 +583,8 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         profile_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
-                releaseResources();
-                finish();
+                ProfileFragment profileFragment = new ProfileFragment();
+                replace_fragment(profileFragment);
             }
         });
 
@@ -632,8 +605,8 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         rating_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rating_screen.setVisibility(View.VISIBLE);
-                home_screen.setVisibility(View.GONE);
+                RatingFragment ratingFragment = new RatingFragment(usersDataFirebaseManager.fetchAllUsersData(), usersFirebaseManager.fetchAllUsers());
+                replace_fragment(ratingFragment);
             }
         });
         rating_to_home.setOnClickListener(new View.OnClickListener() {
@@ -699,9 +672,36 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
         characters_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CharactersFragment charactersFragment = new CharactersFragment();
-                replace_fragment(charactersFragment);
-                //startActivity(new Intent(MainActivity.this, ReadActivity.class));
+                if (haveCharacters()) {
+                    CharactersFragment charactersFragment = new CharactersFragment();
+                    replace_fragment(charactersFragment);
+                    //startActivity(new Intent(MainActivity.this, ReadActivity.class));
+                } else {
+                    no_characters_error.setVisibility(View.VISIBLE);
+
+                    // Создаем анимацию для исчезновения TextView через 2 секунды
+                    AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+                    anim.setDuration(2000); // Длительность анимации в миллисекундах
+                    no_characters_error.startAnimation(anim);
+
+                    // По завершении анимации скрываем TextView
+                    anim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            // Пустая реализация
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            no_characters_error.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                            // Пустая реализация
+                        }
+                    });
+                }
             }
         });
 
@@ -748,6 +748,15 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
 
 
 
+    }
+
+    private boolean haveCharacters() {
+        ArrayList<Character> characters = current_user_data.getCharacters();
+        for (Character character: characters){
+            if (character.isObtained())
+                return true;
+        }
+        return false;
     }
 
     private void replace_fragment(Fragment new_fragment) {
@@ -825,10 +834,108 @@ public class HomeActivity extends AppCompatActivity implements FragmentInteracti
 
     }
 
+    public static UserData getCurrent_user_data(){
+        return current_user_data;
+    }
 
 
+    public static DatabaseReference getDataBaseRefUsersData(){
+        return usersData;
+    }
 
+    public static int getCharacterIconByName(String name){
+        int icon_res = 0;
+        switch (name){
+            case "Kiana":
+                icon_res = R.drawable.kiana_icon;
+                break;
+            case "Kafka":
+                icon_res = R.drawable.kafka_icon;
+                break;
+            case "Blade":
+                icon_res = R.drawable.blade_icon;
+                break;
+            case "Jing Liu":
+                icon_res = R.drawable.jingliu_icon;
+                break;
+            default:
+                break;
+        }
+        return icon_res;
+    }
+    public static int getCharacterIconById(int id){
+        return getCharacterIconByName(current_user_data.getCharacters().get(id).getName());
+    }
 
+    public boolean checkNullNickname(){
+        if (Objects.equals(current_user.getNickname(), "") || current_user.getNickname() == null)
+            return true;
+        return false;
+    }
+    private void openNicknameScreen() {
+        nickname_screen.setVisibility(View.VISIBLE);
+        nickname_screen_start_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nickname = nickname_field.getText().toString().trim();
+
+                if (isValidNickname(nickname)) {
+                    if (!ifUsedNickname(nickname)) {
+                        current_user.changeName(nickname);
+                        nickname_screen.setVisibility(View.GONE);
+                    }
+                    else
+                        Toast.makeText(HomeActivity.this, "This name is already in use!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Здесь можно показать сообщение об ошибке пользователю, если имя недействительно
+                    Toast.makeText(HomeActivity.this, "Incorrect name!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    private boolean isValidNickname(String nickname) {
+        int minNameLength = 3; // например, минимальная длина имени - 3 символа
+        int maxNameLength = 16; // например, максимальная длина имени - 20 символов
+
+        return !nickname.isEmpty() && nickname.length() >= minNameLength && nickname.length() <= maxNameLength;
+    }
+
+    private boolean ifUsedNickname(String nickname){
+        for (User el: usersFirebaseManager.fetchAllUsers()) {
+            if (el.getNickname() != null && Objects.equals(nickname, el.getNickname()))
+                return true;
+        }
+        return false;
+    }
+
+    public static boolean ifTester(User user){
+        for (Role role : user.getRoles()){
+            if (role == Role.TESTER)
+                return true;
+        }
+        return false;
+    }
+    public void giveTesterRoleResourses(User user){
+        if (ifTester(user)){
+            usersDataFirebaseManager.getUserDataByID(user.getId(), new UsersDataFirebaseManager.UserDataCallback() {
+                @Override
+                public void onUserDataReceived(UserData userData) {
+                    userData.setGems(999999);
+                    userData.setGold(999999);
+                    usersDataFirebaseManager.updateUserData(userData.getId(), userData);
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+
+                }
+            });
+        }
+    }
+
+    public void applyRoles(User user){
+        giveTesterRoleResourses(user);
+    }
 
     @Override
     public void onFragmentClosed() {

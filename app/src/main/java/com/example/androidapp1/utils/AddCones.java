@@ -210,5 +210,25 @@ public class AddCones {/*
         cone1.setAtk_growth(12);
         cone1.setDef_growth(10);
         cone1.setRarity(3);
-        cone1.setImageResource(getDrawableCone(1));*/
+        cone1.setImageResource(getDrawableCone(1));
+
+        coneFirebaseManager.clearAllCones();
+        coneFirebaseManager.addCone(cone1);
+        coneFirebaseManager.addCone(cone2);
+        coneFirebaseManager.addCone(cone3);
+        coneFirebaseManager.addCone(cone4);
+        coneFirebaseManager.addCone(cone5);
+        coneFirebaseManager.addCone(cone6);
+        coneFirebaseManager.addCone(cone7);
+        coneFirebaseManager.addCone(cone8);
+        coneFirebaseManager.addCone(cone9);
+        coneFirebaseManager.addCone(cone10);
+        coneFirebaseManager.addCone(cone11);
+        coneFirebaseManager.addCone(cone12);
+        coneFirebaseManager.addCone(cone13);
+        coneFirebaseManager.addCone(cone14);
+        coneFirebaseManager.addCone(cone15);
+        coneFirebaseManager.addCone(cone16);
+        items_cone = coneFirebaseManager.fetchConesAndInitializeUserData();
+        */
 }

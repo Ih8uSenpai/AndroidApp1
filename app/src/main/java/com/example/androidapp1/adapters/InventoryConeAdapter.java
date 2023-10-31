@@ -1,19 +1,21 @@
 package com.example.androidapp1.adapters;
 
+import static com.example.androidapp1.activities.HomeActivity.getCharacterIconById;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.ColorInt;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 
-import com.example.androidapp1.activities.HomeActivity;
 import com.example.androidapp1.models.Cone;
 import com.example.androidapp1.R;
 import com.example.androidapp1.models.ConeUserdata;
@@ -71,6 +73,8 @@ public class InventoryConeAdapter extends BaseAdapter {
         ImageView star4 = convertView.findViewById(R.id.star4);
         ImageView star5 = convertView.findViewById(R.id.star5);
         LinearLayout item_background = convertView.findViewById(R.id.item_background);
+        ImageView cone_character_icon = convertView.findViewById(R.id.cone_character_icon);
+
         TextView item_description = rootView.findViewById(R.id.item_description);
         TextView item_name_details = rootView.findViewById(R.id.item_name_details);
         LinearLayout item_details = rootView.findViewById(R.id.item_details);
@@ -83,13 +87,14 @@ public class InventoryConeAdapter extends BaseAdapter {
         TextView item_lvl = rootView.findViewById(R.id.cone_lvl_details);
         ImageView star4_details = rootView.findViewById(R.id.star4_details), star5_details = rootView.findViewById(R.id.star5_details);
         AppCompatButton level_up_details = rootView.findViewById(R.id.level_up_details);
+        TextView enhance_cone_text_exp_inventory = rootView.findViewById(R.id.enhance_cone_text_exp_inventory);
 
         //LinearLayout item_details = convertView.findViewById(R.id.item_details);
         // get current item data
         ConeUserdata item = items.get(position);
-        Cone cone = item.getConeInfo();
+        Cone cone = item.coneInfo();
         // set item appearance
-        itemImage.setImageResource(item.getConeInfo().getImageResource());
+        itemImage.setImageResource(item.coneInfo().getImageResource());
         itemName.setText(item.getName());
         if (cone.getRarity() == 4) {
             star4.setVisibility(View.VISIBLE);
@@ -108,11 +113,12 @@ public class InventoryConeAdapter extends BaseAdapter {
                 // Update item_name_in_details and item_description
                 item_name_details.setText(item.getName());
                 item_description.setText(cone.getDescription());
+                System.out.println("Set image with id = " + cone.getImageResource() + " to cone with name = " + item.getName());
                 item_image_details.setImageResource(cone.getImageResource());
                 item_lvl.setText(String.format("%d/80", item.getLvl()));
-                int hp = cone.getBase_hp() + item.getConeInfo().getHp_growth() * item.getLvl();
-                int atk = cone.getBase_atk() + item.getConeInfo().getAtk_growth() * item.getLvl();
-                int def = cone.getBase_def() + item.getConeInfo().getDef_growth() * item.getLvl();
+                int hp = item.HpValue();
+                int atk = item.AtkValue();
+                int def = item.DefValue();
                 hp_stat_cone_text_details.setText(String.format("%d", hp));
                 atk_stat_cone_text_details.setText(String.format("%d", atk));
                 def_stat_cone_text_details.setText(String.format("%d", def));
@@ -142,19 +148,47 @@ public class InventoryConeAdapter extends BaseAdapter {
                 level_up_details.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        enhance_cone_text_exp_inventory.setVisibility(View.VISIBLE);
+
+                        AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
+                        anim.setDuration(2000);
+                        enhance_cone_text_exp_inventory.startAnimation(anim);
+
+                        anim.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                enhance_cone_text_exp_inventory.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+
                         item.changeExp(100, Constants.cone_exp_table, usersData);
 
                         item_lvl.setText(String.format("%d/80", item.getLvl()));
-                        int hp = cone.getBase_hp() + item.getConeInfo().getHp_growth() * item.getLvl();
-                        int atk = cone.getBase_atk() + item.getConeInfo().getAtk_growth() * item.getLvl();
-                        int def = cone.getBase_def() + item.getConeInfo().getDef_growth() * item.getLvl();
+                        int hp = item.HpValue();
+                        int atk = item.AtkValue();
+                        int def = item.DefValue();
                         hp_stat_cone_text_details.setText(String.format("%d", hp));
                         atk_stat_cone_text_details.setText(String.format("%d", atk));
                         def_stat_cone_text_details.setText(String.format("%d", def));
+
+
                     }
                 });
             }
         });
+
+        if (item.getCharacter_id() != -1){
+            cone_character_icon.setImageResource(getCharacterIconById(item.getCharacter_id()));
+            cone_character_icon.setVisibility(View.VISIBLE);
+        }
 
         return convertView;
     }

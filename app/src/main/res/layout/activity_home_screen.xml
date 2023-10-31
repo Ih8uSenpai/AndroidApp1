@@ -231,6 +231,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.17">
 
+
             <TextView
                 android:id="@+id/item_name_details"
                 android:layout_width="match_parent"
@@ -449,13 +450,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:textSize="10sp"
-                    android:text="Level Up"
+                    android:text="Enhance"
                     android:textAllCaps="false"
                     android:layout_marginBottom="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:background="@color/light_yellow"/>
+                <TextView
+                    android:id="@+id/enhance_cone_text_exp_inventory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+100exp gained!"
+                    android:layout_marginBottom="5dp"
+                    android:textSize="9sp"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@id/level_up_details"
+                    app:layout_constraintRight_toRightOf="@id/level_up_details"
+                    app:layout_constraintLeft_toLeftOf="@id/level_up_details"
+                    android:visibility="invisible"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
@@ -519,7 +532,7 @@
             app:layout_constraintBottom_toTopOf="@id/guideline_for_bottom_panel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.15"
-            app:layout_constraintWidth_percent="0.75" />
+            app:layout_constraintWidth_percent="0.8" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_for_bottom_panel"
@@ -1178,12 +1191,24 @@
             app:layout_constraintBottom_toBottomOf="@+id/bottom_buttons_panel"
             app:layout_constraintLeft_toLeftOf="@+id/bottom_buttons_panel" />
 
+        <TextView
+            android:id="@+id/no_characters_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/characters_button"
+            app:layout_constraintRight_toRightOf="@id/characters_button"
+            app:layout_constraintLeft_toLeftOf="@id/characters_button"
+            android:layout_marginBottom="10dp"
+            android:text="@string/no_characters_error"
+            android:textColor="@color/white"
+            android:visibility="invisible"/>
+
 
         <ImageButton
             android:id="@+id/inventory_button"
             android:layout_width="50dp"
             android:layout_height="60dp"
-            android:layout_marginStart="160dp"
+            android:layout_marginStart="140dp"
             android:layout_marginBottom="22dp"
             android:background="@drawable/button_selector"
             android:outlineAmbientShadowColor="@color/black"
@@ -1196,7 +1221,7 @@
             android:id="@+id/rating_button"
             android:layout_width="50dp"
             android:layout_height="60dp"
-            android:layout_marginStart="300dp"
+            android:layout_marginStart="280dp"
             android:layout_marginBottom="22dp"
             android:background="@drawable/button_selector"
             android:outlineAmbientShadowColor="@color/black"
@@ -1209,7 +1234,7 @@
             android:id="@+id/memories"
             android:layout_width="50dp"
             android:layout_height="60dp"
-            android:layout_marginStart="440dp"
+            android:layout_marginStart="420dp"
             android:layout_marginBottom="22dp"
             android:background="@drawable/button_selector"
             android:outlineAmbientShadowColor="@color/black"
@@ -1223,7 +1248,7 @@
             android:id="@+id/guild_button"
             android:layout_width="50dp"
             android:layout_height="60dp"
-            android:layout_marginStart="580dp"
+            android:layout_marginStart="560dp"
             android:layout_marginBottom="22dp"
             android:background="@drawable/button_selector"
             android:outlineAmbientShadowColor="@color/black"
@@ -1232,75 +1257,10 @@
             app:layout_constraintBottom_toBottomOf="@+id/bottom_buttons_panel"
             app:layout_constraintLeft_toLeftOf="@+id/bottom_buttons_panel" />
 
-        <ImageButton
-            android:id="@+id/play_button_wrap_wrap_wrap"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:alpha="0.5"
-            android:background="@drawable/circle_shape1"
-            android:backgroundTint="#6770F1"
-            android:outlineAmbientShadowColor="@color/black"
-            android:outlineSpotShadowColor="@color/black"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="@id/play_button"
-            app:layout_constraintLeft_toLeftOf="@id/play_button"
-            app:layout_constraintRight_toRightOf="@id/play_button"
-            app:layout_constraintTop_toTopOf="@id/play_button" />
 
-        <ImageButton
-            android:id="@+id/play_button_wrap_wrap"
-            android:layout_width="94dp"
-            android:layout_height="94dp"
-            android:alpha="0.7"
-            android:background="@drawable/circle_shape1"
-            android:outlineAmbientShadowColor="@color/black"
-            android:outlineSpotShadowColor="@color/black"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="@id/play_button"
-            app:layout_constraintLeft_toLeftOf="@id/play_button"
-            app:layout_constraintRight_toRightOf="@id/play_button"
-            app:layout_constraintTop_toTopOf="@id/play_button" />
 
-        <ImageButton
-            android:id="@+id/play_button_wrap"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:alpha="0.4"
-            android:background="@drawable/circle_shape"
-            android:outlineAmbientShadowColor="@color/black"
-            android:outlineSpotShadowColor="@color/black"
-            android:scaleType="fitCenter"
-            android:src="@drawable/buttons_wrap1"
-            app:layout_constraintBottom_toBottomOf="@id/play_button"
-            app:layout_constraintLeft_toLeftOf="@id/play_button"
-            app:layout_constraintRight_toRightOf="@id/play_button"
-            app:layout_constraintTop_toTopOf="@id/play_button" />
 
-        <ImageButton
-            android:id="@+id/play_button"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:background="@drawable/circle_shape"
-            android:outlineAmbientShadowColor="@color/black"
-            android:outlineSpotShadowColor="@color/black"
-            android:scaleType="fitCenter"
-            app:layout_constraintLeft_toLeftOf="@id/vertical_guideline_for_play_button"
-            app:layout_constraintRight_toRightOf="@id/vertical_guideline_for_play_button"
-            app:layout_constraintTop_toTopOf="@+id/horizontal_guideline_for_play_button" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/star_renegades2"
-            android:gravity="center"
-            android:text="FIGHT"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@id/play_button"
-            app:layout_constraintLeft_toLeftOf="@id/play_button"
-            app:layout_constraintRight_toRightOf="@id/play_button"
-            app:layout_constraintTop_toTopOf="@id/play_button" />
 
 
         <TextView
@@ -1480,5 +1440,112 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/nickname_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#181336"
+        android:elevation="100dp"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/nickname_screen_center_part_of_bg"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.64"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/nmb1jpg" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="3dp"
+            android:layout_width="151dp"
+            android:layout_height="31dp"
+            android:background="@drawable/gold_tex"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/nickname_field"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="#181336"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What name will u go by in the game?"
+            android:textColor="#c4c3c7"
+            app:layout_constraintBottom_toTopOf="@id/nickname_field"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.17"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="#110e1f"/>
+
+        <TextView
+            android:id="@+id/nickname_screen_username"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.17"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="24sp"
+            android:background="#110e1f"
+            android:text="Welcome, username!"
+            android:textColor="@color/good_white"
+            android:gravity="center"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/nickname_screen_start_button"
+            android:layout_width="150dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.1"
+            android:background="#222126"
+            android:text="Start now"
+            android:textColor="@color/good_white"
+            app:layout_constraintTop_toBottomOf="@id/nickname_screen_center_part_of_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:layout_width="152dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.11"
+            android:background="@drawable/gold_tex"
+            app:layout_constraintTop_toBottomOf="@id/nickname_screen_center_part_of_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            app:layout_constraintBottom_toTopOf="@id/nickname_screen_center_part_of_bg"
+            android:background="@drawable/gold_tex" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            app:layout_constraintTop_toBottomOf="@id/nickname_screen_center_part_of_bg"
+            android:background="@drawable/gold_tex" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

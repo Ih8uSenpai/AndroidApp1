@@ -16,4 +16,8 @@
     <color name="light_orange">#AAFF9900</color>
     <color name="light_blue">#AA3363ff</color>
     <color name="light_purple">#BBBB86FC</color>
+    <color name="stat_color">#ffa442</color>
+    <color name="transparent">#00000000</color>
+    <color name="discord_color">#6770F1</color>
+    <color name="good_white">#ebebed</color>
 </resources>

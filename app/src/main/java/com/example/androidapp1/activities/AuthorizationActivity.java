@@ -2,9 +2,6 @@
 package com.example.androidapp1.activities;
 
 
-import static com.example.androidapp1.activities.HomeActivity.getDrawableCone;
-import static com.example.androidapp1.utils.Constants.cone_exp_table;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -27,13 +24,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.example.androidapp1.db_manage.ConeFirebaseManager;
-import com.example.androidapp1.db_manage.UsersDataFirebaseManager;
-import com.example.androidapp1.db_manage.UsersFirebaseManager;
+import com.example.androidapp1.service.ConeFirebaseManager;
+import com.example.androidapp1.service.SiteUsersManager;
+import com.example.androidapp1.service.UsersDataFirebaseManager;
+import com.example.androidapp1.service.UsersFirebaseManager;
 import com.example.androidapp1.models.Character;
-import com.example.androidapp1.models.Cone;
 import com.example.androidapp1.models.ConeUserdata;
 import com.example.androidapp1.models.InventoryItem;
+import com.example.androidapp1.models.Role;
 import com.example.androidapp1.models.User;
 import com.example.androidapp1.models.UserData;
 import com.example.androidapp1.utils.pair;
@@ -43,11 +41,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AuthorizationActivity extends AppCompatActivity {
 
@@ -55,7 +57,7 @@ public class AuthorizationActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseDatabase db;
     DatabaseReference users, usersData;
-    ConeFirebaseManager coneFirebaseManager;
+    public static ConeFirebaseManager coneFirebaseManager;
     UsersDataFirebaseManager usersDataFirebaseManager;
     UsersFirebaseManager usersFirebaseManager;
 
@@ -117,6 +119,10 @@ public class AuthorizationActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
+        //usersFirebaseManager.clearUsersData();
+        //usersDataFirebaseManager.clearUsersData();
     }
 
 
@@ -133,14 +139,23 @@ public class AuthorizationActivity extends AppCompatActivity {
         usersData = db.getReference("UsersData");
 
         // add characters
-        characters.add(new Character(0, "Kiana", 1, 0, 0, 0, 0, 0, "ability_kiana", "passive_kiana", "talent_kiana", false));
-        characters.add(new Character(1, "Kafka", 1, 0, 0, 0, 0, 0, "ability_kafka", "passive_kafka", "talent_kafka", false));
-        characters.add(new Character(2, "Blade", 1, 0, 0, 0, 0, 0, "ability_blade", "passive_blade", "talent_blade", false));
 
+
+        characters.add(new Character("0", "Kiana", 0, 1, 0, 120,
+                215, 102, 5, 50, 21, 11, 7,
+                "ability_Kiana", "passive_Kiana", "talent_Kiana", false, "null"));
+        characters.add(new Character("1", "Kafka", 0, 1, 0, 110,
+                225, 105, 5, 50, 17, 13, 6,
+                "ability_Kafka", "passive_Kafka", "talent_Kafka", false, "null"));
+        characters.add(new Character("2", "Blade", 0, 1, 0, 137,
+                192, 112, 5, 50, 25, 9, 7,
+                "ability_Blade", "passive_Blade", "talent_Blade", false, "null"));
+        characters.add(new Character("3", "Jing Liu", 0, 1, 0, 117,
+                202, 112, 5, 50, 25, 9, 7,
+                "ability_Jing Liu", "passive_Jing Liu", "talent_Jing Liu", false, "null"));
         // add inventory items
         coneFirebaseManager = new ConeFirebaseManager();
         items_cone = coneFirebaseManager.fetchConesAndInitializeUserData();
-        items_cone.add(new ConeUserdata("name1", 0, 1, false));
         //items_artifact = parseItemsFromFile_artifacts(this, R.raw.artifacts);
         //items_item = parseItemsFromFile_items(this, R.raw.items);
 
@@ -182,10 +197,73 @@ public class AuthorizationActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                startActivity(new Intent(AuthorizationActivity.this, HomeActivity.class));
-                                //startActivity(new Intent(MainActivity.this, ReadActivity.class));
-                                releaseResources();
-                                finish();
+                                // Проверяем, существует ли информация о пользователе в Realtime Database
+                                String uid = Objects.requireNonNull(authResult.getUser()).getUid();
+                                users.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (!snapshot.exists()) {
+                                            User user = new User();
+                                            SiteUsersManager siteUsersManager = new SiteUsersManager();
+                                            siteUsersManager.getUserByID(uid).thenAccept(siteUser -> {
+                                                if (siteUser != null) {
+                                                    user.setId(siteUser.getUid());
+                                                    user.setEmail(siteUser.getEmail());
+                                                    user.setUsername(siteUser.getUsername());
+                                                    user.setNickname("");
+                                                    user.setPass(pass.getText().toString());
+                                                    user.getRoles().add(Role.USER);
+                                                    users.child(uid).setValue(user);
+
+                                                    UserData userData = UserData.getInstance();
+                                                    // Заполняем userData вашими значениями, как вы делаете в регистрации
+                                                    userData.setExp(0);
+                                                    userData.setGems(0);
+                                                    userData.setGold(0);
+                                                    userData.setLvl(1);
+                                                    userData.setPulls(0);
+                                                    userData.setEvent_pulls(0);
+                                                    userData.setPulls_to_4star(0);
+                                                    userData.setPulls_to_5star(0);
+                                                    userData.setLoot_table(userData.generateLootTable(new ArrayList<pair>()));
+                                                    userData.setCharacters(characters);
+                                                    //if (userData.getCones().size() != 16)
+                                                    userData.setCones(items_cone);
+                                                    userData.setId(uid);
+                                                    //userData.setArtifacts(items_artifact);
+                                                    //userData.setItems(items_item);
+                                                    //добавление данных пользователя в бд
+
+                                                    usersData.child(uid)
+                                                            .setValue(userData)
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    Snackbar.make(root, "Данные успешно загружены!", Snackbar.LENGTH_LONG).show();
+                                                                }
+                                                            });
+
+                                                    startActivity(new Intent(AuthorizationActivity.this, HomeActivity.class));
+                                                    releaseResources();
+                                                    finish();
+                                                }
+
+                                            });
+
+                                        }
+                                        else {
+                                            startActivity(new Intent(AuthorizationActivity.this, HomeActivity.class));
+                                            releaseResources();
+                                            finish();
+                                        }
+                                        // Переходим на следующий экран
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        // Обработка ошибки, если потребуется
+                                    }
+                                });
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -193,6 +271,7 @@ public class AuthorizationActivity extends AppCompatActivity {
                                 Snackbar.make(root, "Ошибка авторизации", Snackbar.LENGTH_SHORT).show();
                             }
                         });
+
             }
         });
 
@@ -225,21 +304,25 @@ public class AuthorizationActivity extends AppCompatActivity {
 
         final EditText email = dialog.findViewById(R.id.emailField);
         final EditText pass = dialog.findViewById(R.id.passField);
-        final EditText name = dialog.findViewById(R.id.nameField);
+        final EditText username = dialog.findViewById(R.id.nameField);
         AppCompatButton sign_up_button = dialog.findViewById(R.id.signUp);
         sign_up_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(email.getText().toString())) {
-                    Snackbar.make(root, "Введите вашу почту", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(root, "Enter your email", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
                 if (pass.getText().toString().length() < 5) {
-                    Snackbar.make(root, "Пароль должен быть больше 5 символов", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(root, "Password require length more than 5 symbols ", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
-                if (TextUtils.isEmpty(name.getText().toString())) {
-                    Snackbar.make(root, "Введите имя пользователя", Snackbar.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(username.getText().toString())) {
+                    Snackbar.make(root, "Enter your username", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                if (ifUsedUsername(username.getText().toString())){
+                    Snackbar.make(root, "This username is already in use!", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -249,10 +332,13 @@ public class AuthorizationActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 // data for sign in
+                                String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
                                 User user = new User();
                                 user.setEmail(email.getText().toString());
-                                user.setName(name.getText().toString());
+                                user.setUsername(username.getText().toString());
                                 user.setPass(pass.getText().toString());
+                                user.setId(uid);
+                                user.setNickname("");
 
                                 //добавление в бд
                                 users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -272,10 +358,12 @@ public class AuthorizationActivity extends AppCompatActivity {
                                 userData.setCharacters(characters);
                                 //if (userData.getCones().size() != 16)
                                 userData.setCones(items_cone);
+                                userData.setId(uid);
                                 //userData.setArtifacts(items_artifact);
                                 //userData.setItems(items_item);
                                 //добавление данных пользователя в бд
-                                usersData.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+
+                                usersData.child(uid)
                                         .setValue(userData)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -309,6 +397,16 @@ public class AuthorizationActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
+
+    private boolean ifUsedUsername(String username){
+        for (User el: usersFirebaseManager.fetchAllUsers()) {
+            if (el.getNickname() != null && Objects.equals(username, el.getUsername()))
+                return true;
+        }
+        return false;
+    }
+
 
     private void releaseResources(){
         ost1.stop();

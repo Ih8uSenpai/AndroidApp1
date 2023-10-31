@@ -30,6 +30,7 @@ public class UserData {
     private int pulls;
     private int event_pulls;
     private int pulls_to_4star;
+    private String id;
 
 
     private int pulls_to_5star;
@@ -223,5 +224,33 @@ public class UserData {
 
     public void setItems(List<InventoryItem> items) {
         this.items = items;
+    }
+
+    public int totalCharacterLevel() {
+        int res = 0;
+        for (Character character : characters) {
+            if (character.isObtained())
+                res += character.getCharacter_lvl();
+        }
+        return res;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "UserData{" +
+                "exp=" + exp +
+                ", gold=" + gold +
+                ", gems=" + gems +
+                ", lvl=" + lvl +
+                ", characters=" + characters +
+                '}';
     }
 }

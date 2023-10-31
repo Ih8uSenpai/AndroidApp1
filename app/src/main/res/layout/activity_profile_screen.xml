@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ProfileActivity">
+    tools:context=".fragments.CharactersFragment">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -55,7 +55,7 @@
                         android:id="@+id/avatar_frame_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/blade_bg1"
+                        android:src="@drawable/metal_tex"
                         android:scaleType="fitXY"/>
 
                     <com.google.android.material.imageview.ShapeableImageView
@@ -63,7 +63,7 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/icon1x"
+                        android:src="@drawable/angry_kafka_icon"
                         android:scaleType="centerCrop"
                         app:shapeAppearanceOverlay="@style/CircleShape"/>
 
@@ -83,14 +83,14 @@
 
                     <!-- User name with futuristic font and text style -->
                     <TextView
-                        android:id="@+id/user_name"
+                        android:id="@+id/profile_nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="username"
+                        android:textAllCaps="false"
                         android:textSize="24sp"
                         android:textColor="@color/white"
                         android:layout_marginTop="5dp"
-                        android:fontFamily="@font/star_renegades2"
                         android:shadowColor="@color/blue"
                         android:shadowDx="2"
                         android:shadowDy="2"
@@ -100,25 +100,24 @@
 
                     <!-- User level with futuristic font and text style -->
                     <TextView
-                        android:id="@+id/user_level"
+                        android:id="@+id/profile_lvl"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Lv. XX"
                         android:textSize="18sp"
                         android:textColor="@color/white"
                         android:layout_marginTop="5dp"
-                        android:fontFamily="@font/star_renegades2"
                         android:shadowColor="@color/blue"
                         android:shadowDx="2"
                         android:shadowDy="2"
                         android:shadowRadius="1"
-                        app:layout_constraintTop_toBottomOf="@id/user_name"
+                        app:layout_constraintTop_toBottomOf="@id/profile_nickname"
                         app:layout_constraintLeft_toLeftOf="parent"/>
 
 
                     <!-- Button to edit profile with stylish design -->
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/edit_profile"
+                        android:id="@+id/change_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="change name"
@@ -184,11 +183,11 @@
                 android:id="@+id/profile_to_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:background="#00000000"
                 android:contentDescription="close"
                 android:elevation="15dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="20dp"
                 android:src="@drawable/close_button"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

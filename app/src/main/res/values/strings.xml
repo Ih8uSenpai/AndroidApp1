@@ -5,5 +5,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="error">n/a</string>
     <string name="lv">Lv.</string>
-
+    <string name="character_level">Lv. %d</string>
+    <string name="character_hp">HP: %d</string>
+    <string name="character_defense">Defense: %d</string>
+    <string name="no_characters_error">Seems like u don\'t have any characters :(</string>
+    <string-array name="rating_criteria">
+        <item>Choose rating type:</item>
+        <item>Player lvl</item>
+        <item>Total characters lvl</item>
+    </string-array>
 </resources>
